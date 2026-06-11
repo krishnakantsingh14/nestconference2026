@@ -1,0 +1,136 @@
+Container: /p/scratch/vbt/singh17/nestconference/portableNestContainer/nestMonolithicZen2.sif
+Bench:     /p/scratch/vbt/singh17/nestconference/portableNestContainer/nest_hpc_bench.py
+Ranks=2  Threads/rank=64  VPs=128
+Scale=16  Simtime=1000ms
+[1781117076.139359] [jsfc093:22933:0]     ucp_context.c:2339 UCX  INFO  Version 1.19.0 (loaded from /opt/ucx/lib/libucp.so.0)
+[1781117076.412664] [jsfc093:22933:0]          parser.c:2359 UCX  WARN  unused environment variable: UCX_PATH
+[1781117076.412664] [jsfc093:22933:0]          parser.c:2359 UCX  WARN  (set UCX_WARN_UNUSED_ENV_VARS=n to suppress this warning)
+[1781117076.412668] [jsfc093:22933:0]          parser.c:2368 UCX  INFO  UCX_* env variables: UCX_LOG_LEVEL=info UCX_MAX_RNDV_RAILS=1 UCX_NET_DEVICES=mlx5_0:1,mlx5_1:1 UCX_TLS=rc_x,self,sm
+[1781117076.416143] [jsfc093:22933:0]      ucp_worker.c:1903 UCX  INFO    ucp_context_0 self cfg#0 tag(self/memory rc_mlx5/mlx5_1:1 rc_mlx5/mlx5_0:1)
+[1781117076.464243] [jsfc093:22933:0]      ucp_worker.c:1903 UCX  INFO    ucp_context_0 intra-node cfg#1 tag(sysv/memory rc_mlx5/mlx5_1:1 rc_mlx5/mlx5_0:1)
+[INFO] [2026.6.10 20:44:36 /opt/src/src/nestkernel/vp_manager.cpp:74 @ VPManager::initialize()] : OMP_NUM_THREADS is set in your environment, but NEST ignores it.
+For details, see the Guide to parallel computing in the NEST Documentation.
+[1781117076.137412] [jsfc093:22931:0]     ucp_context.c:2339 UCX  INFO  Version 1.19.0 (loaded from /opt/ucx/lib/libucp.so.0)
+[1781117076.411982] [jsfc093:22931:0]          parser.c:2359 UCX  WARN  unused environment variable: UCX_PATH
+[1781117076.411982] [jsfc093:22931:0]          parser.c:2359 UCX  WARN  (set UCX_WARN_UNUSED_ENV_VARS=n to suppress this warning)
+[1781117076.411986] [jsfc093:22931:0]          parser.c:2368 UCX  INFO  UCX_* env variables: UCX_LOG_LEVEL=info UCX_MAX_RNDV_RAILS=1 UCX_NET_DEVICES=mlx5_0:1,mlx5_1:1 UCX_TLS=rc_x,self,sm
+[1781117076.416138] [jsfc093:22931:0]      ucp_worker.c:1903 UCX  INFO    ucp_context_0 self cfg#0 tag(self/memory rc_mlx5/mlx5_1:1 rc_mlx5/mlx5_0:1)
+[1781117076.463795] [jsfc093:22931:0]      ucp_worker.c:1903 UCX  INFO    ucp_context_0 intra-node cfg#1 tag(sysv/memory rc_mlx5/mlx5_1:1 rc_mlx5/mlx5_0:1)
+[INFO] [2026.6.10 20:44:36 /opt/src/src/nestkernel/vp_manager.cpp:74 @ VPManager::initialize()] : OMP_NUM_THREADS is set in your environment, but NEST ignores it.
+For details, see the Guide to parallel computing in the NEST Documentation.
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: 3.9.0
+ Built: Jun 10 2026 17:59:51
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit https://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: 3.9.0
+ Built: Jun 10 2026 17:59:51
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit https://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+Jun 10 20:44:37 VPManager::initialize() [Info]: 
+    OMP_NUM_THREADS is set in your environment, but NEST ignores it.
+    For details, see the Guide to parallel computing in the NEST Documentation.
+
+Jun 10 20:44:37 VPManager::initialize() [Info]: 
+    OMP_NUM_THREADS is set in your environment, but NEST ignores it.
+    For details, see the Guide to parallel computing in the NEST Documentation.
+
+Jun 10 20:44:37 SimulationManager::set_status [Info]: 
+    Temporal resolution changed from 0.1 to 0.1 ms.
+
+Jun 10 20:44:37 build_network [Info]: 
+    Creating excitatory population.
+
+Jun 10 20:44:37 SimulationManager::set_status [Info]: 
+    Temporal resolution changed from 0.1 to 0.1 ms.
+
+Jun 10 20:44:37 build_network [Info]: 
+    Creating excitatory population.
+
+Jun 10 20:44:37 build_network [Info]: 
+    Creating inhibitory population.
+
+Jun 10 20:44:37 build_network [Info]: 
+    Creating inhibitory population.
+
+Jun 10 20:44:37 build_network [Info]: 
+    Randomizing membrane potentials.
+
+Jun 10 20:44:37 build_network [Info]: 
+    Randomizing membrane potentials.
+
+Jun 10 20:44:38 build_network [Info]: 
+    Creating excitatory stimulus generator.
+
+Jun 10 20:44:38 build_network [Info]: 
+    Creating excitatory spike recorder.
+
+Jun 10 20:44:38 build_network [Info]: 
+    Creating excitatory stimulus generator.
+
+Jun 10 20:44:38 build_network [Info]: 
+    Creating excitatory spike recorder.
+
+Jun 10 20:44:38 build_network [Info]: 
+    Connecting stimulus generators.
+
+Jun 10 20:44:38 build_network [Info]: 
+    Connecting excitatory -> excitatory population.
+
+Jun 10 20:44:38 build_network [Info]: 
+    Connecting stimulus generators.
+
+Jun 10 20:44:38 build_network [Info]: 
+    Connecting excitatory -> excitatory population.
+
+Jun 10 20:44:43 build_network [Info]: 
+    Connecting inhibitory -> excitatory population.
+
+Jun 10 20:44:44 build_network [Info]: 
+    Connecting inhibitory -> excitatory population.
+
+Jun 10 20:44:44 build_network [Info]: 
+    Connecting excitatory -> inhibitory population.
+
+Jun 10 20:44:45 build_network [Info]: 
+    Connecting excitatory -> inhibitory population.
+
+Jun 10 20:44:45 build_network [Info]: 
+    Connecting inhibitory -> inhibitory population.
+
+Jun 10 20:44:46 build_network [Info]: 
+    Connecting inhibitory -> inhibitory population.
+
+Jun 10 20:44:46 build_network [Info]: 
+    Connecting spike recorders.
+
+Jun 10 20:44:47 build_network [Info]: 
+    Connecting spike recorders.
+
+Jun 10 20:44:47 NodeManager::prepare_nodes [Info]: 
+    Preparing 90128 nodes for simulation.
+
+Jun 10 20:44:47 NodeManager::prepare_nodes [Info]: 
+    Preparing 90128 nodes for simulation.

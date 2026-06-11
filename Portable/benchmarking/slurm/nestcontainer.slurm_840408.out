@@ -1,0 +1,128 @@
+Container: /p/scratch/vbt/singh17/nestconference/portableNestContainer/nestMonolithicZen2.sif
+Bench:     /p/scratch/vbt/singh17/nestconference/portableNestContainer/nest_hpc_bench.py
+Ranks=2  Threads/rank=64  VPs=128
+Scale=16  Simtime=1000ms
+[1781115320.920927] [jsfc093:22093:0]          parser.c:2359 UCX  WARN  unused environment variable: UCX_PATH
+[1781115320.920927] [jsfc093:22093:0]          parser.c:2359 UCX  WARN  (set UCX_WARN_UNUSED_ENV_VARS=n to suppress this warning)
+[INFO] [2026.6.10 20:15:20 /opt/src/src/nestkernel/vp_manager.cpp:74 @ VPManager::initialize()] : OMP_NUM_THREADS is set in your environment, but NEST ignores it.
+For details, see the Guide to parallel computing in the NEST Documentation.
+[1781115320.922308] [jsfc093:22091:0]          parser.c:2359 UCX  WARN  unused environment variable: UCX_PATH
+[1781115320.922308] [jsfc093:22091:0]          parser.c:2359 UCX  WARN  (set UCX_WARN_UNUSED_ENV_VARS=n to suppress this warning)
+[INFO] [2026.6.10 20:15:20 /opt/src/src/nestkernel/vp_manager.cpp:74 @ VPManager::initialize()] : OMP_NUM_THREADS is set in your environment, but NEST ignores it.
+For details, see the Guide to parallel computing in the NEST Documentation.
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: 3.9.0
+ Built: Jun 10 2026 17:59:51
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit https://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: 3.9.0
+ Built: Jun 10 2026 17:59:51
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit https://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+Jun 10 20:15:21 VPManager::initialize() [Info]: 
+    OMP_NUM_THREADS is set in your environment, but NEST ignores it.
+    For details, see the Guide to parallel computing in the NEST Documentation.
+
+Jun 10 20:15:21 VPManager::initialize() [Info]: 
+    OMP_NUM_THREADS is set in your environment, but NEST ignores it.
+    For details, see the Guide to parallel computing in the NEST Documentation.
+
+Jun 10 20:15:21 SimulationManager::set_status [Info]: 
+    Temporal resolution changed from 0.1 to 0.1 ms.
+
+Jun 10 20:15:21 build_network [Info]: 
+    Creating excitatory population.
+
+Jun 10 20:15:21 SimulationManager::set_status [Info]: 
+    Temporal resolution changed from 0.1 to 0.1 ms.
+
+Jun 10 20:15:21 build_network [Info]: 
+    Creating excitatory population.
+
+Jun 10 20:15:22 build_network [Info]: 
+    Creating inhibitory population.
+
+Jun 10 20:15:22 build_network [Info]: 
+    Creating inhibitory population.
+
+Jun 10 20:15:22 build_network [Info]: 
+    Randomizing membrane potentials.
+
+Jun 10 20:15:22 build_network [Info]: 
+    Randomizing membrane potentials.
+
+Jun 10 20:15:23 build_network [Info]: 
+    Creating excitatory stimulus generator.
+
+Jun 10 20:15:23 build_network [Info]: 
+    Creating excitatory spike recorder.
+
+Jun 10 20:15:23 build_network [Info]: 
+    Creating excitatory stimulus generator.
+
+Jun 10 20:15:23 build_network [Info]: 
+    Creating excitatory spike recorder.
+
+Jun 10 20:15:23 build_network [Info]: 
+    Connecting stimulus generators.
+
+Jun 10 20:15:23 build_network [Info]: 
+    Connecting stimulus generators.
+
+Jun 10 20:15:23 build_network [Info]: 
+    Connecting excitatory -> excitatory population.
+
+Jun 10 20:15:23 build_network [Info]: 
+    Connecting excitatory -> excitatory population.
+
+Jun 10 20:15:28 build_network [Info]: 
+    Connecting inhibitory -> excitatory population.
+
+Jun 10 20:15:28 build_network [Info]: 
+    Connecting inhibitory -> excitatory population.
+
+Jun 10 20:15:29 build_network [Info]: 
+    Connecting excitatory -> inhibitory population.
+
+Jun 10 20:15:29 build_network [Info]: 
+    Connecting excitatory -> inhibitory population.
+
+Jun 10 20:15:30 build_network [Info]: 
+    Connecting inhibitory -> inhibitory population.
+
+Jun 10 20:15:31 build_network [Info]: 
+    Connecting inhibitory -> inhibitory population.
+
+Jun 10 20:15:31 build_network [Info]: 
+    Connecting spike recorders.
+
+Jun 10 20:15:31 build_network [Info]: 
+    Connecting spike recorders.
+
+Jun 10 20:15:32 NodeManager::prepare_nodes [Info]: 
+    Preparing 90128 nodes for simulation.
+
+Jun 10 20:15:32 NodeManager::prepare_nodes [Info]: 
+    Preparing 90128 nodes for simulation.

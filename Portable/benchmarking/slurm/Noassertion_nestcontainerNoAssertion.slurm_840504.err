@@ -1,0 +1,40 @@
+1 9071300 # virt_mem_0
+
+0 9071300 # virt_mem_0
+
+1 1.1198687553405762 # build_time_nodes
+
+1 13667576 # virt_mem_after_nodes
+
+0 1.1397340297698975 # build_time_nodes
+
+0 13667572 # virt_mem_after_nodes
+
+1 8.252290487289429 # build_edge_time
+
+1 47022700 # virt_mem_after_edges
+
+0 8.978000402450562 # build_edge_time
+
+0 47022440 # virt_mem_after_edges
+
+0 47602692 # virt_mem_after_presim
+
+1 47602968 # virt_mem_after_presim
+
+0 10.575846672058105 # presim_time
+
+1 11.336563110351562 # presim_time
+
+0 47602692 # virt_mem_after_sim
+
+0 13.6066575050354 # sim_time
+
+1 47602968 # virt_mem_after_sim
+
+1 13.606796979904175 # sim_time
+
+0 7.688000000000001 # average rate
+
+1 7.732 # average rate
+

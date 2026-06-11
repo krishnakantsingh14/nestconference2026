@@ -1,0 +1,179 @@
+Bootstrap: docker
+From: rockylinux/rockylinux:10
+
+%labels
+    Author "Krishna"
+    Description "Self-contained: PMIx 5.0.3 + UCX 1.19.0 + OpenMPI 5.0.5 + NEST 3.9, zen2-optimized. Bypasses host MPI."
+
+%files
+    # Pre-download into the build directory before building:
+    #   wget https://github.com/openpmix/openpmix/releases/download/v5.0.3/pmix-5.0.3.tar.gz
+    #   wget --no-check-certificate https://github.com/openucx/ucx/releases/download/v1.19.0/ucx-1.19.0.tar.gz
+    #   wget https://download.open-mpi.org/release/open-mpi/v5.0/openmpi-5.0.5.tar.gz
+    #pmix-5.0.3.tar.gz       /opt/src/
+    #ucx-1.19.0.tar.gz       /opt/src/
+    #openmpi-5.0.5.tar.gz    /opt/src/
+
+%post
+    set -e
+    export NPROC_LIMIT=16
+
+    # zen2 (AMD EPYC 7742) flags applied to the whole stack.
+    # NOTE: this PINS the SIF to zen2 — running on a non-zen2 CPU
+    #       (e.g. a Skylake laptop) will fault with "illegal instruction".
+    export CFLAGS="-O3 -march=znver2 -mtune=znver2 -fPIC"
+    export CXXFLAGS="-O3 -march=znver2 -mtune=znver2 -fPIC"
+
+    #####################################################################
+    # System dependencies (native GCC 14 on Rocky 10 — no toolset needed)
+    #####################################################################
+    dnf -y install epel-release
+    dnf config-manager --set-enabled crb || dnf config-manager --enable crb || true
+    dnf -y update --allowerasing
+    dnf -y groupinstall "Development Tools" --allowerasing
+    dnf -y install --allowerasing \
+        wget curl git which make cmake patch file \
+        autoconf automake libtool \
+        gcc gcc-c++ gcc-gfortran \
+        numactl numactl-devel \
+        libibverbs libibverbs-devel rdma-core-devel librdmacm librdmacm-devel \
+        libevent libevent-devel \
+        hwloc hwloc-devel \
+        zlib zlib-devel \
+        gsl gsl-devel \
+        boost boost-devel \
+        munge munge-devel \
+        python3 python3-devel python3-pip
+
+    mkdir -p /opt/src
+    cd /opt/src
+    ##############################################
+    # Download files
+    ###########################
+
+    wget https://github.com/openpmix/openpmix/releases/download/v5.0.3/pmix-5.0.3.tar.gz
+    wget --no-check-certificate https://github.com/openucx/ucx/releases/download/v1.19.0/ucx-1.19.0.tar.gz
+    wget https://download.open-mpi.org/release/open-mpi/v5.0/openmpi-5.0.5.tar.gz
+
+    #####################################################################
+    # PMIx 5.0.3  (container-internal — do NOT use host Slurm PMIx)
+    #####################################################################
+    tar -xf pmix-5.0.3.tar.gz
+    cd pmix-5.0.3
+    ./configure --prefix=/opt/pmix
+    make -j${NPROC_LIMIT} install
+    export PMIX_PATH=/opt/pmix
+    cd /opt/src
+
+    #####################################################################
+    # UCX 1.19.0
+    #####################################################################
+    tar -xf ucx-1.19.0.tar.gz
+    cd ucx-1.19.0
+    ./configure --prefix=/opt/ucx \
+    --enable-mt --enable-cma --enable-optimizations \
+    --with-verbs --with-rdmacm \
+    --with-rc --with-ud --with-dc \
+    --with-mlx5-dv --with-ib-hw-tm \
+    --disable-assertions --disable-params-check --disable-debug --disable-logging
+    make -j${NPROC_LIMIT} install
+    export UCX_PATH=/opt/ucx
+    cd /opt/src
+
+    #####################################################################
+    # UCC 
+    #####################################################################
+
+   
+    git clone https://github.com/openucx/ucc.git ucc-src
+    cd ucc-src
+    ./autogen.sh
+    ./configure --prefix=/opt/ucc --with-ucx=/opt/ucx
+    make -j${NPROC_LIMIT} install
+    export UCC_PATH=/opt/ucc
+    cd /opt/src
+
+
+
+
+    #####################################################################
+    # OpenMPI 5.0.5  (PMIx + UCX, system libevent/hwloc)
+    #####################################################################
+    tar -xf openmpi-5.0.5.tar.gz
+    cd openmpi-5.0.5
+    ./configure \
+        --prefix=/opt/openmpi \
+        --with-pmix=${PMIX_PATH} \
+        --with-ucx=${UCX_PATH} \
+        --with-ucc=${UCC_PATH} \
+        --with-libevent=/usr \
+        --with-hwloc=/usr \
+        --enable-mpi-thread-multiple
+    make -j${NPROC_LIMIT} install
+    export MPI_PATH=/opt/openmpi
+    export PATH=${MPI_PATH}/bin:$PATH
+    export LD_LIBRARY_PATH=${MPI_PATH}/lib:${UCX_PATH}/lib:${PMIX_PATH}/lib:$LD_LIBRARY_PATH
+    cd /opt/src
+
+    #####################################################################
+    # Python deps + mpi4py against the container's OpenMPI 
+    # try not to install Matplotlib
+    #####################################################################
+    pip3 install --upgrade pip
+    pip3 install numpy Cython matplotlib scipy
+    MPICC=${MPI_PATH}/bin/mpicc pip3 install mpi4py
+
+    #####################################################################
+    # NEST Simulator v3.9 (zen2-optimized)
+    #####################################################################
+    git clone https://github.com/nest/nest-simulator.git src
+    cd src
+    git checkout v3.9
+    cd /opt/src
+    mkdir -p build && cd build
+
+    cmake ../src \
+        -DCMAKE_INSTALL_PREFIX=/opt/nest \
+        -DCMAKE_INSTALL_LIBDIR=lib64 \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_C_FLAGS="-O3 -march=znver2 -fPIC" \
+        -DCMAKE_CXX_FLAGS="-O3 -march=znver2 -fPIC" \
+        -Dwith-mpi=ON \
+        -Dwith-openmp=ON \
+        -Dwith-python=ON \
+        -Dwith-gsl=ON \
+        -Dwith-boost=ON \
+        -Dwith-optimize=OFF
+
+    make -j${NPROC_LIMIT} install
+    cd /opt/src && rm -rf /opt/src/src /opt/src/build
+
+%environment
+    # Container MPI stack — deliberately ahead of any host MPI on PATH
+    export PMIX_PATH=/opt/pmix
+    export UCX_PATH=/opt/ucx
+    export MPI_PATH=/opt/openmpi
+    export PATH=${MPI_PATH}/bin:$PATH
+
+    # NEST
+    export PATH=/opt/nest/bin:$PATH
+    export PYTHONPATH=/opt/nest/lib64/python3.12/site-packages:$PYTHONPATH
+
+    # Unified library search path (container libs first → bypasses host MPI)
+    export LD_LIBRARY_PATH=/opt/nest/lib64:/opt/openmpi/lib:/opt/ucx/lib:/opt/pmix/lib:$LD_LIBRARY_PATH
+
+
+%runscript
+    echo "NEST 3.9 (zen2) + OpenMPI 5.0.5 + UCX + PMIx"
+    echo "  mpirun : $(which mpirun)"
+    echo "  nest   : $(which nest)"
+    exec "$@"
+
+%test
+    echo "--- which MPI is in use (should be /opt/openmpi, NOT host) ---"
+    which mpirun
+    mpirun --version | head -1
+    echo "--- NEST import ---"
+    python3 -c "import nest; print('NEST', nest.__version__)"
+    echo "--- mpi4py linkage ---"
+    python3 -c "import mpi4py; print('mpi4py', mpi4py.__version__)"

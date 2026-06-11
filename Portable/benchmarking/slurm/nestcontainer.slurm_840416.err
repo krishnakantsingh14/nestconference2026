@@ -1,0 +1,106 @@
+0 8978608 # virt_mem_0
+
+1 8982800 # virt_mem_0
+
+1 1.1031715869903564 # build_time_nodes
+
+1 13579068 # virt_mem_after_nodes
+
+0 1.123978853225708 # build_time_nodes
+
+0 13574876 # virt_mem_after_nodes
+
+1 8.326054096221924 # build_edge_time
+
+1 46934200 # virt_mem_after_edges
+
+0 8.755009174346924 # build_edge_time
+
+0 46929736 # virt_mem_after_edges
+
+[jsfc093:22179:1:22324]    tag_recv.c:238  Assertion `ucs_async_check_owner_thread(&(worker)->async)' failed
+==== backtrace (tid:  22324) ====
+ 0  /opt/ucx/lib/libucs.so.0(ucs_handle_error+0x2b4) [0x15524700de44]
+ 1  /opt/ucx/lib/libucs.so.0(ucs_fatal_error_message+0xba) [0x15524700ac7a]
+ 2  /opt/ucx/lib/libucs.so.0(ucs_fatal_error_format+0xd7) [0x15524700ad57]
+ 3  /opt/ucx/lib/libucp.so.0(ucp_tag_recv_nbx+0x57e) [0x155247190ace]
+ 4  /opt/openmpi/lib/libmpi.so.40(mca_pml_ucx_irecv+0xa6) [0x155247ab6ab6]
+ 5  /opt/openmpi/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x64) [0x15524793c944]
+ 6  /opt/openmpi/lib/libmpi.so.40(ompi_coll_base_allgather_intra_two_procs+0x87) [0x15524793b487]
+ 7  /opt/openmpi/lib/libmpi.so.40(ompi_coll_tuned_allgather_intra_dec_fixed+0x4a) [0x155247980afa]
+ 8  /opt/openmpi/lib/libmpi.so.40(PMPI_Allgather+0x152) [0x1552478de292]
+ 9  /opt/nest/lib64/python3.12/site-packages/nest/../../../nest/libnest.so.3(_ZN4nest10MPIManager21communicate_AllgatherERSt6vectorIlSaIlEE+0x40) [0x155248041240]
+10  /opt/nest/lib64/python3.12/site-packages/nest/../../../nest/libnest.so.3(_ZN4nest17ConnectionManager31compute_target_data_buffer_sizeEv+0x101) [0x155248054f91]
+11  /opt/nest/lib64/python3.12/site-packages/nest/../../../nest/libnest.so.3(_ZN4nest17SimulationManager32update_connection_infrastructureEm+0x609) [0x1552480484a9]
+12  /opt/nest/lib64/python3.12/site-packages/nest/../../../nest/libnest.so.3(+0x43d614) [0x155248048614]
+13  /lib64/libgomp.so.1(+0x22318) [0x15544a442318]
+14  /lib64/libc.so.6(+0x95a7f) [0x15544ed33a7f]
+15  /lib64/libc.so.6(+0x1064fc) [0x15544eda44fc]
+=================================
+[jsfc093:22179] *** Process received signal ***
+[jsfc093:22179] Signal: Aborted (6)
+[jsfc093:22179] Signal code:  (-6)
+[jsfc093:22179] [ 0] /lib64/libc.so.6(+0x411c0)[0x15544ecdf1c0]
+[jsfc093:22179] [ 1] /lib64/libc.so.6(+0x979dc)[0x15544ed359dc]
+[jsfc093:22179] [ 2] /lib64/libc.so.6(gsignal+0x16)[0x15544ecdf116]
+[jsfc093:22179] [ 3] /lib64/libc.so.6(abort+0xd7)[0x15544ecc68fa]
+[jsfc093:22179] [ 4] /opt/ucx/lib/libucs.so.0(+0x37c7f)[0x15524700ac7f]
+[jsfc093:22179] [ 5] /opt/ucx/lib/libucs.so.0(ucs_fatal_error_format+0xd7)[0x15524700ad57]
+[jsfc093:22179] [ 6] /opt/ucx/lib/libucp.so.0(ucp_tag_recv_nbx+0x57e)[0x155247190ace]
+[jsfc093:22179] [ 7] /opt/openmpi/lib/libmpi.so.40(mca_pml_ucx_irecv+0xa6)[0x155247ab6ab6]
+[jsfc093:22179] [ 8] /opt/openmpi/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x64)[0x15524793c944]
+[jsfc093:22179] [ 9] /opt/openmpi/lib/libmpi.so.40(ompi_coll_base_allgather_intra_two_procs+0x87)[0x15524793b487]
+[jsfc093:22179] [10] /opt/openmpi/lib/libmpi.so.40(ompi_coll_tuned_allgather_intra_dec_fixed+0x4a)[0x155247980afa]
+[jsfc093:22179] [11] /opt/openmpi/lib/libmpi.so.40(PMPI_Allgather+0x152)[0x1552478de292]
+[jsfc093:22179] [12] /opt/nest/lib64/python3.12/site-packages/nest/../../../nest/libnest.so.3(_ZN4nest10MPIManager21communicate_AllgatherERSt6vectorIlSaIlEE+0x40)[0x155248041240]
+[jsfc093:22179] [13] /opt/nest/lib64/python3.12/site-packages/nest/../../../nest/libnest.so.3(_ZN4nest17ConnectionManager31compute_target_data_buffer_sizeEv+0x101)[0x155248054f91]
+[jsfc093:22179] [14] /opt/nest/lib64/python3.12/site-packages/nest/../../../nest/libnest.so.3(_ZN4nest17SimulationManager32update_connection_infrastructureEm+0x609)[0x1552480484a9]
+[jsfc093:22179] [15] /opt/nest/lib64/python3.12/site-packages/nest/../../../nest/libnest.so.3(+0x43d614)[0x155248048614]
+[jsfc093:22179] [16] /lib64/libgomp.so.1(+0x22318)[0x15544a442318]
+[jsfc093:22179] [17] /lib64/libc.so.6(+0x95a7f)[0x15544ed33a7f]
+[jsfc093:22179] [18] /lib64/libc.so.6(+0x1064fc)[0x15544eda44fc]
+[jsfc093:22179] *** End of error message ***
+[jsfc093:22181:1:22222]    tag_recv.c:238  Assertion `ucs_async_check_owner_thread(&(worker)->async)' failed
+==== backtrace (tid:  22222) ====
+ 0  /opt/ucx/lib/libucs.so.0(ucs_handle_error+0x2b4) [0x14fff2973e44]
+ 1  /opt/ucx/lib/libucs.so.0(ucs_fatal_error_message+0xba) [0x14fff2970c7a]
+ 2  /opt/ucx/lib/libucs.so.0(ucs_fatal_error_format+0xd7) [0x14fff2970d57]
+ 3  /opt/ucx/lib/libucp.so.0(ucp_tag_recv_nbx+0x57e) [0x14fff2af6ace]
+ 4  /opt/openmpi/lib/libmpi.so.40(mca_pml_ucx_irecv+0xa6) [0x14fff341cab6]
+ 5  /opt/openmpi/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x64) [0x14fff32a2944]
+ 6  /opt/openmpi/lib/libmpi.so.40(ompi_coll_base_allgather_intra_two_procs+0x87) [0x14fff32a1487]
+ 7  /opt/openmpi/lib/libmpi.so.40(ompi_coll_tuned_allgather_intra_dec_fixed+0x4a) [0x14fff32e6afa]
+ 8  /opt/openmpi/lib/libmpi.so.40(PMPI_Allgather+0x152) [0x14fff3244292]
+ 9  /opt/nest/lib64/python3.12/site-packages/nest/../../../nest/libnest.so.3(_ZN4nest10MPIManager21communicate_AllgatherERSt6vectorIlSaIlEE+0x40) [0x14fff39a7240]
+10  /opt/nest/lib64/python3.12/site-packages/nest/../../../nest/libnest.so.3(_ZN4nest17ConnectionManager31compute_target_data_buffer_sizeEv+0x101) [0x14fff39baf91]
+11  /opt/nest/lib64/python3.12/site-packages/nest/../../../nest/libnest.so.3(_ZN4nest17SimulationManager32update_connection_infrastructureEm+0x609) [0x14fff39ae4a9]
+12  /opt/nest/lib64/python3.12/site-packages/nest/../../../nest/libnest.so.3(+0x43d614) [0x14fff39ae614]
+13  /lib64/libgomp.so.1(+0x22318) [0x1501f5db2318]
+14  /lib64/libc.so.6(+0x95a7f) [0x1501fa6a0a7f]
+15  /lib64/libc.so.6(+0x1064fc) [0x1501fa7114fc]
+=================================
+[jsfc093:22181] *** Process received signal ***
+[jsfc093:22181] Signal: Aborted (6)
+[jsfc093:22181] Signal code:  (-6)
+[jsfc093:22181] [ 0] /lib64/libc.so.6(+0x411c0)[0x1501fa64c1c0]
+[jsfc093:22181] [ 1] /lib64/libc.so.6(+0x979dc)[0x1501fa6a29dc]
+[jsfc093:22181] [ 2] /lib64/libc.so.6(gsignal+0x16)[0x1501fa64c116]
+[jsfc093:22181] [ 3] /lib64/libc.so.6(abort+0xd7)[0x1501fa6338fa]
+[jsfc093:22181] [ 4] /opt/ucx/lib/libucs.so.0(+0x37c7f)[0x14fff2970c7f]
+[jsfc093:22181] [ 5] /opt/ucx/lib/libucs.so.0(ucs_fatal_error_format+0xd7)[0x14fff2970d57]
+[jsfc093:22181] [ 6] /opt/ucx/lib/libucp.so.0(ucp_tag_recv_nbx+0x57e)[0x14fff2af6ace]
+[jsfc093:22181] [ 7] /opt/openmpi/lib/libmpi.so.40(mca_pml_ucx_irecv+0xa6)[0x14fff341cab6]
+[jsfc093:22181] [ 8] /opt/openmpi/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x64)[0x14fff32a2944]
+[jsfc093:22181] [ 9] /opt/openmpi/lib/libmpi.so.40(ompi_coll_base_allgather_intra_two_procs+0x87)[0x14fff32a1487]
+[jsfc093:22181] [10] /opt/openmpi/lib/libmpi.so.40(ompi_coll_tuned_allgather_intra_dec_fixed+0x4a)[0x14fff32e6afa]
+[jsfc093:22181] [11] /opt/openmpi/lib/libmpi.so.40(PMPI_Allgather+0x152)[0x14fff3244292]
+[jsfc093:22181] [12] /opt/nest/lib64/python3.12/site-packages/nest/../../../nest/libnest.so.3(_ZN4nest10MPIManager21communicate_AllgatherERSt6vectorIlSaIlEE+0x40)[0x14fff39a7240]
+[jsfc093:22181] [13] /opt/nest/lib64/python3.12/site-packages/nest/../../../nest/libnest.so.3(_ZN4nest17ConnectionManager31compute_target_data_buffer_sizeEv+0x101)[0x14fff39baf91]
+[jsfc093:22181] [14] /opt/nest/lib64/python3.12/site-packages/nest/../../../nest/libnest.so.3(_ZN4nest17SimulationManager32update_connection_infrastructureEm+0x609)[0x14fff39ae4a9]
+[jsfc093:22181] [15] /opt/nest/lib64/python3.12/site-packages/nest/../../../nest/libnest.so.3(+0x43d614)[0x14fff39ae614]
+[jsfc093:22181] [16] /lib64/libgomp.so.1(+0x22318)[0x1501f5db2318]
+[jsfc093:22181] [17] /lib64/libc.so.6(+0x95a7f)[0x1501fa6a0a7f]
+[jsfc093:22181] [18] /lib64/libc.so.6(+0x1064fc)[0x1501fa7114fc]
+[jsfc093:22181] *** End of error message ***
+srun: error: jsfc093: task 0: Exited with exit code 134
+srun: error: jsfc093: task 1: Exited with exit code 143

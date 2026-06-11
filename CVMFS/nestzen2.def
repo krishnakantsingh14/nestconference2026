@@ -1,0 +1,220 @@
+Bootstrap: docker
+From: rockylinux/rockylinux:9
+
+%labels
+    Description "NEST 3.9 built against EESSI 2025.06 (GCC 14.3.0, OpenMPI 5.0.8 + PMIx)"
+
+%setup
+    # rockylinux:9 has no /cvmfs — create bind-mount targets before %post
+    mkdir -p ${APPTAINER_ROOTFS}/cvmfs
+    mkdir -p ${APPTAINER_ROOTFS}/scratch
+
+%post
+    set -euxo pipefail
+
+    # ── 1. System dependencies ──────────────────────────────────────────
+    # patchelf is mandatory — NEST's CMake ignores -DCMAKE_INSTALL_RPATH,
+    # so we rewrite the binary's RPATH directly after install.
+    dnf -y update --allowerasing
+    dnf -y install epel-release
+    dnf -y install --allowerasing \
+        git make patch file which patchelf \
+        ca-certificates \
+        libibverbs librdmacm numactl-libs hwloc
+    dnf clean all
+
+    # ── 2. CVMFS sanity check ───────────────────────────────────────────
+    if [ ! -d /cvmfs/software.eessi.io/versions/2025.06 ]; then
+        echo "FATAL: /cvmfs/software.eessi.io/versions/2025.06 not visible during build."
+        echo "       Run with: apptainer build --bind /cvmfs:/cvmfs ..."
+        exit 1
+    fi
+    echo "✓ EESSI 2025.06 reachable"
+
+    # ── 3. Source EESSI + load build toolchain ──────────────────────────
+    # EESSI's init scripts reference unbound vars; disable -u around them.
+    set +u
+    source /cvmfs/software.eessi.io/versions/2025.06/init/bash
+    module purge
+    module load GCC/14.3.0
+    module load OpenMPI/5.0.8-GCC-14.3.0
+    module load Python/3.13.5-GCCcore-14.3.0
+    module load SciPy-bundle/2025.07-gfbf-2025b
+    module load GSL/2.8-GCC-14.3.0
+    module load Boost/1.88.0-GCC-14.3.0
+    module load CMake/4.0.3-GCCcore-14.3.0
+    module load mpi4py/4.1.0-gompi-2025b              
+    module list 2>&1
+
+    # ── 4. Sanity check: EBROOT* must be set ────────────────────────────
+    echo "── EBROOT* variables ──"
+    env | grep ^EBROOT | sort
+    echo "───────────────────────"
+
+    if [ -z "${EBROOTOPENMPI:-}" ]; then
+        echo "FATAL: EBROOTOPENMPI not set — module load did not take effect."
+        exit 1
+    fi
+
+    # ── 5. Assemble RPATH from loaded modules ───────────────────────────
+    # These are the directories pynestkernel.so / libnest.so / libsli.so
+    # need to resolve at runtime.
+    RPATH_DIRS="/opt/nest/lib64"
+#    RPATH_DIRS="${RPATH_DIRS}:${EBROOTOPENMPI}/lib"
+#    RPATH_DIRS="${RPATH_DIRS}:${EBROOTPYTHON}/lib"
+#    RPATH_DIRS="${RPATH_DIRS}:${EBROOTGSL}/lib"
+#    RPATH_DIRS="${RPATH_DIRS}:${EBROOTBOOST}/lib"
+#    RPATH_DIRS="${RPATH_DIRS}:${EBROOTUCX}/lib"
+#    RPATH_DIRS="${RPATH_DIRS}:${EBROOTPMIX}/lib"
+#    RPATH_DIRS="${RPATH_DIRS}:${EBROOTLIBFABRIC}/lib"
+#    RPATH_DIRS="${RPATH_DIRS}:${EBROOTHWLOC}/lib"
+#    RPATH_DIRS="${RPATH_DIRS}:${EBROOTLIBEVENT}/lib"
+#    RPATH_DIRS="${RPATH_DIRS}:${EBROOTGCCCORE}/lib64"
+    
+    # Walk every loaded EBROOT, add its lib and lib64 dirs
+    for ebvar in $(env | grep ^EBROOT | cut -d= -f1); do
+        root="${!ebvar}"
+        [ -d "$root/lib"   ] && RPATH_DIRS="${RPATH_DIRS}:${root}/lib"
+        [ -d "$root/lib64" ] && RPATH_DIRS="${RPATH_DIRS}:${root}/lib64"
+    done
+
+    echo "RPATH will include:"
+    echo "$RPATH_DIRS" | tr ':' '\n'
+
+    echo "── RPATH to embed ──"
+    echo "${RPATH_DIRS}" | tr ':' '\n'
+    echo "────────────────────"
+
+    # ── 6. Build NEST 3.9 ───────────────────────────────────────────────
+    mkdir -p /tmp/nest-build && cd /tmp/nest-build
+    git clone --depth 1 --branch v3.9 https://github.com/nest/nest-simulator.git src
+    mkdir build && cd build
+
+    # CMake flags below are a best-effort — NEST's own CMakeLists.txt may
+    # override CMAKE_INSTALL_RPATH. We patch with patchelf afterward.
+    cmake ../src \
+        -DCMAKE_INSTALL_PREFIX=/opt/nest \
+        -DCMAKE_INSTALL_LIBDIR=lib64 \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_C_FLAGS="-O3 -march=znver2 -fPIC" \
+        -DCMAKE_CXX_FLAGS="-O3 -march=znver2 -fPIC" \
+        -DCMAKE_SHARED_LINKER_FLAGS="-Wl,--disable-new-dtags" \
+        -DCMAKE_EXE_LINKER_FLAGS="-Wl,--disable-new-dtags" \
+        -DCMAKE_MODULE_LINKER_FLAGS="-Wl,--disable-new-dtags" \
+        -DCMAKE_INSTALL_RPATH="${RPATH_DIRS}" \
+        -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON \
+        -Dwith-mpi=ON \
+        -Dwith-openmp=ON \
+        -Dwith-python=ON \
+        -Dwith-gsl=ON \
+        -Dwith-boost=ON \
+        -Dwith-optimize=OFF
+
+    make -j"$(nproc)"
+    make install
+    cd / && rm -rf /tmp/nest-build
+
+    # ── 7. Verify pynestkernel.so exists ────────────────────────────────
+    KERNEL_SO=$(find /opt/nest -name "pynestkernel*.so" -print -quit)
+    if [ -z "$KERNEL_SO" ]; then
+        echo "FATAL: pynestkernel*.so not found after installation"
+        find /opt/nest -name "*.so" 2>/dev/null
+        exit 1
+    fi
+    echo "Kernel SO found: $KERNEL_SO"
+
+    echo "── RPATH before patching ──"
+    readelf -d "$KERNEL_SO" | grep -E 'RPATH|RUNPATH' || true
+    echo "───────────────────────────"
+
+    # ── 8. Force CVMFS paths into RPATH with patchelf ───────────────────
+    # NEST's CMake overrides our -DCMAKE_INSTALL_RPATH flag, so we use
+    # patchelf to rewrite the binary's RPATH directly. This is the only
+    # bulletproof way — patchelf operates on the ELF binary, CMake cannot
+    # undo it.
+    patch_rpath() {
+        local lib="$1"
+        [ -L "$lib" ] && return    # skip symlinks
+        local current
+        current=$(patchelf --print-rpath "$lib" 2>/dev/null || echo "")
+        patchelf --force-rpath --set-rpath \
+            "${RPATH_DIRS}${current:+:${current}}" "$lib"
+        echo "  Patched: $lib"
+    }
+
+    # Patch pynestkernel.so
+    patch_rpath "$KERNEL_SO"
+
+    # Patch libnest.so.* and libsli.so.* — they're in pynestkernel's
+    # NEEDED list and each links against libmpi too.
+    for lib in $(find /opt/nest -name "libnest*.so*" -o -name "libsli*.so*" 2>/dev/null); do
+        patch_rpath "$lib"
+    done
+
+    # Patch nest executables (nest, run_all_cpptests, etc.)
+    for bin in /opt/nest/bin/*; do
+        [ -x "$bin" ] && file "$bin" | grep -q ELF && patch_rpath "$bin"
+    done
+
+    echo "── RPATH after patching ──"
+    readelf -d "$KERNEL_SO" | grep -E 'RPATH|RUNPATH'
+    echo "──────────────────────────"
+
+    # ── 9. Capture env for runtime snapshot ─────────────────────────────
+    # Source NEST's own vars first (sets NEST_*, PYTHONPATH).
+    source /opt/nest/bin/nest_vars.sh
+    # Ensure PYTHONPATH points to NEST's site-packages.
+    export PYTHONPATH="/opt/nest/lib64/python3.13/site-packages:${PYTHONPATH:-}"
+
+    # ── 10. Write runtime env file (UNQUOTED heredoc → vars expand NOW) ─
+    # CRITICAL: heredoc delimiter is NESTENV without quotes. That's what
+    # makes ${PATH}, ${PYTHONPATH} etc. expand to their build-time values.
+    # If you quote it ('NESTENV'), the values are stored as literal
+    # variable references and Python won't find the nest module at runtime.
+    mkdir -p /.singularity.d/env
+    cat > /.singularity.d/env/99-nest.sh << NESTENV
+#!/bin/bash
+# Auto-generated at build time. EESSI 2025.06 CVMFS paths baked in.
+# At runtime, /cvmfs must be bind-mounted for binaries to resolve.
+
+export PATH="${PATH}"
+export PYTHONPATH="${PYTHONPATH}"
+export EBPYTHONPREFIXES="${EBPYTHONPREFIXES:-}"
+export MANPATH="${MANPATH:-}"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH:-}"
+
+export NEST_INSTALL_DIR=/opt/nest
+export NEST_DATA_DIR=/opt/nest/share/nest
+export NEST_DOC_DIR=/opt/nest/share/doc/nest
+export NEST_MODULE_PATH=/opt/nest/lib64/nest
+export NEST_PYTHON_PREFIX=/opt/nest/lib64/python3.13/site-packages
+
+# OpenMPI 5.x MCA — PMIx-only, UCX-preferred
+export OMPI_MCA_pml=ucx
+
+NESTENV
+    chmod +x /.singularity.d/env/99-nest.sh
+
+    echo "── Generated 99-nest.sh ──"
+    cat /.singularity.d/env/99-nest.sh
+    echo "──────────────────────────"
+
+    set -u
+
+    # ── 11. Build-time verification ─────────────────────────────────────
+    # Run import in a clean shell using only the snapshot file. If this
+    # fails, the build fails — we don't ship broken SIFs.
+    env -i HOME=/tmp PATH=/usr/bin:/bin bash -c "
+        source /.singularity.d/env/99-nest.sh
+        python3 -c 'import nest; print(\"✓ Build-time NEST import OK, version:\", nest.__version__)'
+    "
+
+%environment
+    # Empty — all env handled by /.singularity.d/env/99-nest.sh
+
+%runscript
+    exec "$@"
+
+%test
+    python3 -c "import nest; print('NEST version:', nest.__version__)"
+    mpirun --version | head -1

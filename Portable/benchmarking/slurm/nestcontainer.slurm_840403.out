@@ -1,0 +1,4 @@
+Container: /p/scratch/vbt/singh17/nestconference/portableNestContainer/nestMonolithicZen2.sif
+Bench:     /p/scratch/vbt/singh17/nestconference/portableNestContainer/nest_hpc_bench.py
+Ranks=4  Threads/rank=64  VPs=256
+Scale=32  Simtime=1000ms

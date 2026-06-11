@@ -1,0 +1,382 @@
+Container: /p/scratch/vbt/singh17/nestconference/portableNestContainer/monolithicNestNoUcxAssertion.sif
+Bench:     /p/scratch/vbt/singh17/nestconference/portableNestContainer/nest_hpc_bench.py
+Ranks=2  Threads/rank=64  VPs=128
+Scale=16  Simtime=1000ms
+[1781168440.235811] [jsfc088:824517:0]     ucp_context.c:2339 UCX  INFO  Version 1.19.0 (loaded from /opt/ucx/lib/libucp.so.0)
+[1781168441.246516] [jsfc088:824517:0]          parser.c:2359 UCX  WARN  unused environment variable: UCX_PATH
+[1781168441.246516] [jsfc088:824517:0]          parser.c:2359 UCX  WARN  (set UCX_WARN_UNUSED_ENV_VARS=n to suppress this warning)
+[1781168441.246521] [jsfc088:824517:0]          parser.c:2368 UCX  INFO  UCX_* env variables: UCX_LOG_LEVEL=info UCX_NET_DEVICES=mlx5_0:1,mlx5_1:1
+[1781168441.249384] [jsfc088:824517:0]      ucp_worker.c:1903 UCX  INFO    ucp_context_0 self cfg#0 tag(self/memory rc_mlx5/mlx5_1:1 rc_mlx5/mlx5_0:1)
+[1781168441.292422] [jsfc088:824517:0]      ucp_worker.c:1903 UCX  INFO    ucp_context_0 intra-node cfg#1 tag(sysv/memory rc_mlx5/mlx5_1:1 rc_mlx5/mlx5_0:1)
+[INFO] [2026.6.11 11:0:41 /opt/src/src/nestkernel/vp_manager.cpp:74 @ VPManager::initialize()] : OMP_NUM_THREADS is set in your environment, but NEST ignores it.
+[1781168440.235484] [jsfc088:824515:0]     ucp_context.c:2339 UCX  INFO  Version 1.19.0 (loaded from /opt/ucx/lib/libucp.so.0)
+[1781168441.246637] [jsfc088:824515:0]          parser.c:2359 UCX  WARN  unused environment variable: UCX_PATH
+[1781168441.246637] [jsfc088:824515:0]          parser.c:2359 UCX  WARN  (set UCX_WARN_UNUSED_ENV_VARS=n to suppress this warning)
+[1781168441.246641] [jsfc088:824515:0]          parser.c:2368 UCX  INFO  UCX_* env variables: UCX_LOG_LEVEL=info UCX_NET_DEVICES=mlx5_0:1,mlx5_1:1
+[1781168441.249353] [jsfc088:824515:0]      ucp_worker.c:1903 UCX  INFO    ucp_context_0 self cfg#0 tag(self/memory rc_mlx5/mlx5_1:1 rc_mlx5/mlx5_0:1)
+[1781168441.292519] [jsfc088:824515:0]      ucp_worker.c:1903 UCX  INFO    ucp_context_0 intra-node cfg#1 tag(sysv/memory rc_mlx5/mlx5_1:1 rc_mlx5/mlx5_0:1)
+[INFO] [2026.6.11 11:0:41 /opt/src/src/nestkernel/vp_manager.cpp:74 @ VPManager::initialize()] : OMP_NUM_THREADS is set in your environment, but NEST ignores it.
+For details, see the Guide to parallel computing in the NEST Documentation.
+For details, see the Guide to parallel computing in the NEST Documentation.
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: 3.9.0
+ Built: Jun 11 2026 08:36:53
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit https://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: 3.9.0
+ Built: Jun 11 2026 08:36:53
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit https://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+Jun 11 11:00:42 VPManager::initialize() [Info]: 
+    OMP_NUM_THREADS is set in your environment, but NEST ignores it.
+    For details, see the Guide to parallel computing in the NEST Documentation.
+
+Jun 11 11:00:42 VPManager::initialize() [Info]: 
+    OMP_NUM_THREADS is set in your environment, but NEST ignores it.
+    For details, see the Guide to parallel computing in the NEST Documentation.
+
+Jun 11 11:00:42 SimulationManager::set_status [Info]: 
+    Temporal resolution changed from 0.1 to 0.1 ms.
+
+Jun 11 11:00:42 build_network [Info]: 
+    Creating excitatory population.
+
+Jun 11 11:00:42 SimulationManager::set_status [Info]: 
+    Temporal resolution changed from 0.1 to 0.1 ms.
+
+Jun 11 11:00:42 build_network [Info]: 
+    Creating excitatory population.
+
+Jun 11 11:00:42 build_network [Info]: 
+    Creating inhibitory population.
+
+Jun 11 11:00:42 build_network [Info]: 
+    Randomizing membrane potentials.
+
+Jun 11 11:00:42 build_network [Info]: 
+    Creating inhibitory population.
+
+Jun 11 11:00:42 build_network [Info]: 
+    Randomizing membrane potentials.
+
+Jun 11 11:00:43 build_network [Info]: 
+    Creating excitatory stimulus generator.
+
+Jun 11 11:00:43 build_network [Info]: 
+    Creating excitatory spike recorder.
+
+Jun 11 11:00:43 build_network [Info]: 
+    Creating excitatory stimulus generator.
+
+Jun 11 11:00:43 build_network [Info]: 
+    Creating excitatory spike recorder.
+
+Jun 11 11:00:43 build_network [Info]: 
+    Connecting stimulus generators.
+
+Jun 11 11:00:43 build_network [Info]: 
+    Connecting excitatory -> excitatory population.
+
+Jun 11 11:00:43 build_network [Info]: 
+    Connecting stimulus generators.
+
+Jun 11 11:00:43 build_network [Info]: 
+    Connecting excitatory -> excitatory population.
+
+Jun 11 11:00:48 build_network [Info]: 
+    Connecting inhibitory -> excitatory population.
+
+Jun 11 11:00:49 build_network [Info]: 
+    Connecting inhibitory -> excitatory population.
+
+Jun 11 11:00:49 build_network [Info]: 
+    Connecting excitatory -> inhibitory population.
+
+Jun 11 11:00:50 build_network [Info]: 
+    Connecting excitatory -> inhibitory population.
+
+Jun 11 11:00:50 build_network [Info]: 
+    Connecting inhibitory -> inhibitory population.
+
+Jun 11 11:00:51 build_network [Info]: 
+    Connecting inhibitory -> inhibitory population.
+
+Jun 11 11:00:51 build_network [Info]: 
+    Connecting spike recorders.
+
+Jun 11 11:00:52 build_network [Info]: 
+    Connecting spike recorders.
+
+Jun 11 11:00:52 NodeManager::prepare_nodes [Info]: 
+    Preparing 90128 nodes for simulation.
+
+Jun 11 11:00:52 NodeManager::prepare_nodes [Info]: 
+    Preparing 90128 nodes for simulation.
+
+Jun 11 11:01:02 SimulationManager::run [Warning]: 
+    The requested simulation time is not an integer multiple of the minimal 
+    delay in the network. This may result in inconsistent results under the 
+    following conditions: (i) A network contains more than one source of 
+    randomness, e.g., two different poisson_generators, and (ii) Simulate is 
+    called repeatedly with simulation times that are not multiples of the 
+    minimal delay.
+
+Jun 11 11:01:02 SimulationManager::start_updating_ [Info]: 
+    Number of local nodes: 90128
+    Simulation time (ms): 100
+    Number of OpenMP threads: 64
+    Number of MPI processes: 2
+
+Jun 11 11:01:02 SimulationManager::run [Warning]: 
+    The requested simulation time is not an integer multiple of the minimal 
+    delay in the network. This may result in inconsistent results under the 
+    following conditions: (i) A network contains more than one source of 
+    randomness, e.g., two different poisson_generators, and (ii) Simulate is 
+    called repeatedly with simulation times that are not multiples of the 
+    minimal delay.
+
+Jun 11 11:01:02 SimulationManager::start_updating_ [Info]: 
+    Number of local nodes: 90128
+    Simulation time (ms): 100
+    Number of OpenMP threads: 64
+    Number of MPI processes: 2
+
+Jun 11 11:01:03 SimulationManager::run [Info]: 
+    Simulation finished.
+
+Jun 11 11:01:03 SimulationManager::run [Info]: 
+    Simulation finished.
+
+Jun 11 11:01:03 NodeManager::prepare_nodes [Info]: 
+    Preparing 90128 nodes for simulation.
+
+Jun 11 11:01:03 NodeManager::prepare_nodes [Info]: 
+    Preparing 90128 nodes for simulation.
+
+Jun 11 11:01:03 SimulationManager::run [Warning]: 
+    The requested simulation time is not an integer multiple of the minimal 
+
+Jun 11 11:01:03 SimulationManager::run [Warning]: 
+    The requested simulation time is not an integer multiple of the minimal 
+    delay in the network. This may result in inconsistent results under the 
+    delay in the network. This may result in inconsistent results under the 
+    following conditions: (i) A network contains more than one source of 
+    following conditions: (i) A network contains more than one source of 
+    randomness, e.g., two different poisson_generators, and (ii) Simulate is 
+    randomness, e.g., two different poisson_generators, and (ii) Simulate is 
+    called repeatedly with simulation times that are not multiples of the 
+    minimal delay.
+    called repeatedly with simulation times that are not multiples of the 
+    minimal delay.
+
+Jun 11 11:01:03 SimulationManager::start_updating_ [Info]: 
+    Number of local nodes: 90128
+    Simulation time (ms): 1000
+    Number of OpenMP threads: 64
+
+Jun 11 11:01:03 SimulationManager::start_updating_ [Info]: 
+    Number of local nodes: 90128
+    Simulation time (ms): 1000
+    Number of MPI processes: 2
+    Number of OpenMP threads: 64
+    Number of MPI processes: 2
+
+Jun 11 11:01:16 SimulationManager::run [Info]: 
+    Simulation finished.
+
+Jun 11 11:01:16 SimulationManager::run [Info]: 
+    Simulation finished.
+{'num_threads': 64, 'scale': 16.0, 'simtime': 1000.0, 'presimtime': 100.0, 'dt': 0.1, 'record_spikes': True, 'record_to': 'memory', 'path_name': '/scratch/results_840504', 'log_file': 'log'}
+0 9071300 # virt_mem_0
+
+0 1.1397340297698975 # build_time_nodes
+
+0 13667572 # virt_mem_after_nodes
+
+0 8.978000402450562 # build_edge_time
+
+0 47022440 # virt_mem_after_edges
+
+0 47602692 # virt_mem_after_presim
+
+0 10.575846672058105 # presim_time
+
+0 47602692 # virt_mem_after_sim
+
+0 13.6066575050354 # sim_time
+
+0 7.688000000000001 # average rate
+
+{'adaptive_target_buffers': True, 'biological_time': 1100.0, 'buffer_size_spike_data': 6666, 'buffer_size_target_data': 16777216, 'connection_rules': ('pairwise_poisson', 'one_to_one', 'all_to_all', 'fixed_indegree', 'fixed_outdegree', 'pairwise_bernoulli', 'symmetric_pairwise_bernoulli', 'fixed_total_number'), 'data_path': '', 'data_prefix': '', 'dict_miss_is_error': True, 'eprop_learning_window': 1000.0, 'eprop_reset_neurons_on_update': True, 'eprop_update_interval': 1000.0, 'growth_curves': ('gaussian', 'linear', 'sigmoid'), 'growth_factor_buffer_spike_data': 1.5, 'growth_factor_buffer_target_data': 1.5, 'keep_source_table': True, 'local_num_threads': 64, 'local_spike_counter': 635067, 'max_buffer_size_target_data': 16777216, 'max_delay': 1.5, 'max_num_syn_models': 512, 'max_update_time': 0.07208791700000017, 'min_delay': 1.5, 'min_update_time': 0.000846845, 'ms_per_tic': 0.001, 'network_size': 180002, 'node_models': ('volume_transmitter', 'weight_recorder', 'ac_generator', 'dc_generator', 'gamma_sup_generator', 'mip_generator', 'noise_generator', 'inhomogeneous_poisson_generator', 'poisson_generator', 'poisson_generator_ps', 'ppd_sup_generator', 'pulsepacket_generator', 'sinusoidal_poisson_generator', 'spike_generator', 'step_current_generator', 'step_rate_generator', 'sinusoidal_gamma_generator', 'aeif_cond_alpha', 'aeif_cond_alpha_astro', 'aeif_cond_alpha_multisynapse', 'aeif_cond_beta_multisynapse', 'aeif_cond_exp', 'aeif_psc_alpha', 'aeif_psc_exp', 'aeif_psc_delta', 'gif_cond_exp', 'gif_cond_exp_multisynapse', 'glif_cond', 'hh_cond_exp_traub', 'hh_cond_beta_gap_traub', 'hh_psc_alpha', 'hh_psc_alpha_gap', 'ht_neuron', 'iaf_chxk_2008', 'iaf_cond_alpha', 'iaf_cond_alpha_mc', 'iaf_cond_beta', 'iaf_cond_exp', 'iaf_cond_exp_sfa_rr', 'iaf_bw_2001_exact', 'siegert_neuron', 'amat2_psc_exp', 'cm_default', 'eprop_iaf_bsshslm_2020', 'eprop_iaf_adapt_bsshslm_2020', 'eprop_readout_bsshslm_2020', 'eprop_iaf', 'eprop_iaf_adapt', 'eprop_iaf_psc_delta', 'eprop_iaf_psc_delta_adapt', 'eprop_readout', 'gif_psc_exp', 'gif_psc_exp_multisynapse', 'glif_psc', 'glif_psc_double_alpha', 'iaf_chs_2007', 'iaf_psc_alpha', 'iaf_psc_alpha_multisynapse', 'iaf_psc_alpha_ps', 'iaf_psc_delta', 'iaf_psc_delta_ps', 'iaf_psc_exp', 'iaf_psc_exp_htum', 'iaf_psc_exp_multisynapse', 'iaf_psc_exp_ps', 'iaf_psc_exp_ps_lossless', 'iaf_tum_2000', 'ignore_and_fire', 'izhikevich', 'mat2_psc_exp', 'parrot_neuron', 'parrot_neuron_ps', 'pp_psc_delta', 'iaf_bw_2001', 'aeif_psc_delta_clopath', 'hh_psc_alpha_clopath', 'astrocyte_lr_1994', 'gif_pop_psc_exp', 'correlation_detector', 'correlomatrix_detector', 'correlospinmatrix_detector', 'spike_train_injector', 'erfc_neuron', 'ginzburg_neuron', 'mcculloch_pitts_neuron', 'gauss_rate_ipn', 'rate_transformer_gauss', 'lin_rate_ipn', 'lin_rate_opn', 'rate_transformer_lin', 'sigmoid_rate_ipn', 'rate_transformer_sigmoid', 'sigmoid_rate_gg_1998_ipn', 'rate_transformer_sigmoid_gg_1998', 'tanh_rate_ipn', 'tanh_rate_opn', 'rate_transformer_tanh', 'threshold_lin_rate_ipn', 'threshold_lin_rate_opn', 'rate_transformer_threshold_lin', 'multimeter', 'voltmeter', 'spike_recorder', 'spin_detector', 'spike_dilutor', 'pp_cond_exp_mc_urbanczik'), 'num_connections': 1012591000, 'num_processes': 2, 'off_grid_spiking': False, 'overwrite_files': True, 'prepared': False, 'print_time': False, 'recording_backends': ('memory', 'ascii', 'screen', 'mpi'), 'recv_buffer_size_secondary_events': 0, 'resolution': 0.1, 'rng_seed': 143202461, 'rng_type': 'mt19937_64', 'rng_types': ('Philox_32', 'Philox_64', 'Threefry_32', 'Threefry_64', 'mt19937', 'mt19937_64'), 'send_buffer_size_secondary_events': 0, 'spike_buffer_grow_extra': 0.5, 'spike_buffer_resize_log': {'times': array([    0,     0,    30,    30,    45,    60,   330,   330,   360,
+         510,   510,   525,   660,   675,   690,   705,   735,   765,
+         810,   885,   885,   900,   930,  1050,  1050,  1065,  1095,
+        1260,  1260,  1275,  1305,  1440,  1485,  1485,  1500,  1575,
+        1710,  1710,  1725,  1740,  1800,  1800,  1935,  1995,  1995,
+        2010,  2160,  2160,  2175,  2190,  2310,  2325,  2370,  2385,
+        2400,  2415,  2595,  2625,  2655,  2685,  2745,  2760,  2775,
+        3015,  3090,  3105,  3120,  3165,  3225,  3225,  3240,  3255,
+        3285,  3315,  3330,  3375,  3375,  3390,  3405,  3570,  3615,
+        3630,  3645,  3660,  3930,  3975,  3990,  4020,  4035,  4095,
+        4095,  4125,  4320,  4320,  4350,  4455,  4470,  4485,  4500,
+        4545,  4545,  4575,  4620,  4650,  4665,  4680,  4740,  4740,
+        4755,  4785,  4935,  4935,  4950,  5220,  5280,  5280,  5295,
+        5355,  5355,  5400,  5445,  5445,  5460,  5475,  5505,  5550,
+        5565,  5610,  5625,  5670,  6390,  6435,  6435,  6450,  6465,
+        6510,  6525,  6555,  6960,  7035,  7035,  7050,  7305,  7365,
+        7365,  7380,  7395,  7410,  7485,  7500,  7530,  7725,  7770,
+        7785,  7800,  7815,  7875,  7890,  7905,  8355,  8355,  8370,
+        8430,  8490,  8490,  8505,  8520,  8955,  8955,  8985,  9345,
+        9375,  9420,  9435,  9480,  9480,  9525,  9630,  9630,  9645,
+        9660,  9930, 10005, 10005, 10020, 10065, 10125, 10125, 10140,
+       10155, 10215, 10215, 10230, 10245, 10260, 10335, 10335, 10350,
+       10365, 10410, 10470, 10845, 10845, 10860, 10875, 10920, 10920,
+       10935, 10950]), 'global_max_spikes_sent': array([   0, 3524,  220,  741, 2058, 3358,  491, 1082, 2439,  559, 1342,
+       2695,  498,  991, 2354, 5224, 1321, 1625, 2751,  617,  891, 1897,
+       3390,  914, 1213, 1843, 2896,  596,  858, 1343, 2426, 4025,  706,
+        853, 1691, 2705,  758, 1067, 2359, 4103, 1070, 1475, 2807,  746,
+        987, 2496,  343,  545, 1072, 1795, 4341, 6788,  482,  702, 1205,
+       2226, 4147, 1163, 1633, 3202,  869, 1332, 2126, 4390,  898, 1060,
+       1783, 2675,  697, 1172, 2558, 4329, 1283, 1659, 2540,  323,  387,
+       1138, 2693, 4490,  580,  789, 1468, 2986, 4777,  278,  622, 1426,
+       3868,  865,  987, 3157,  880, 1586, 2618,  659, 1009, 1599, 4100,
+        885, 1171, 4003,  638,  873, 1738, 3059,  513,  771, 1481, 2368,
+        545,  707, 1985, 3619,  881, 1603, 2915,  708, 1506, 3059,  754,
+       1062, 2582, 4777, 1001, 2281, 4314,  876, 1245, 2224, 3457,  603,
+       1179, 2480, 4247,  807, 1173, 2551, 3849,  841, 1004, 2133, 3220,
+        449,  557,  850, 1640, 2506,  654, 1502, 2396, 5256,  426,  730,
+       1531, 2707,  597, 1109, 2663,  497,  775, 1860, 3617,  530,  608,
+       1067, 2081,  540, 1366, 2638, 5320, 1270, 1759, 3292,  558, 1168,
+       2349,  394,  493, 1007, 1689, 2600,  636,  868, 1377, 2353,  552,
+        822, 1279, 3421,  369,  584, 1010, 1689, 2800,  746, 1068, 2770,
+       4870,  989, 2718,  688, 1126, 2179, 3663,  498,  627, 1184, 2222]), 'new_buffer_size': array([    2,  5286,   242,  1111,  3087,  5037,   540,  1623,  3658,
+         614,  2013,  4042,   547,  1486,  3531,  7836,  1453,  2437,
+        4126,   678,  1336,  2845,  5085,  1005,  1819,  2764,  4344,
+         655,  1287,  2014,  3639,  6037,   776,  1279,  2536,  4057,
+         833,  1600,  3538,  6154,  1177,  2212,  4210,   820,  1480,
+        3744,   377,   817,  1608,  2692,  6511, 10182,   530,  1053,
+        1807,  3339,  6220,  1279,  2449,  4803,   955,  1998,  3189,
+        6585,   987,  1590,  2674,  4012,   766,  1758,  3837,  6493,
+        1411,  2488,  3810,   355,   580,  1707,  4039,  6735,   638,
+        1183,  2202,  4479,  7165,   305,   933,  2139,  5802,   951,
+        1480,  4735,   968,  2379,  3927,   724,  1513,  2398,  6150,
+         973,  1756,  6004,   701,  1309,  2607,  4588,   564,  1156,
+        2221,  3552,   599,  1060,  2977,  5428,   969,  2404,  4372,
+         778,  2259,  4588,   829,  1593,  3873,  7165,  1101,  3421,
+        6471,   963,  1867,  3336,  5185,   663,  1768,  3720,  6370,
+         887,  1759,  3826,  5773,   925,  1506,  3199,  4830,   493,
+         835,  1275,  2460,  3759,   719,  2253,  3594,  7884,   468,
+        1095,  2296,  4060,   656,  1663,  3994,   546,  1162,  2790,
+        5425,   583,   912,  1600,  3121,   594,  2049,  3957,  7980,
+        1397,  2638,  4938,   613,  1752,  3523,   433,   739,  1510,
+        2533,  3900,   699,  1302,  2065,  3529,   607,  1233,  1918,
+        5131,   405,   876,  1515,  2533,  4200,   820,  1602,  4155,
+        7305,  1087,  4077,   756,  1689,  3268,  5494,   547,   940,
+{'num_threads': 64, 'scale': 16.0, 'simtime': 1000.0, 'presimtime': 100.0, 'dt': 0.1, 'record_spikes': True, 'record_to': 'memory', 'path_name': '/scratch/results_840504', 'log_file': 'log'}
+1 9071300 # virt_mem_0
+
+1 1.1198687553405762 # build_time_nodes
+
+1 13667576 # virt_mem_after_nodes
+
+1 8.252290487289429 # build_edge_time
+
+1 47022700 # virt_mem_after_edges
+
+1 47602968 # virt_mem_after_presim
+
+1 11.336563110351562 # presim_time
+
+1 47602968 # virt_mem_after_sim
+
+1 13.606796979904175 # sim_time
+
+1 7.732 # average rate
+
+{'adaptive_target_buffers': True, 'biological_time': 1100.0, 'buffer_size_spike_data': 6666, 'buffer_size_target_data': 16777216, 'connection_rules': ('pairwise_poisson', 'one_to_one', 'all_to_all', 'fixed_indegree', 'fixed_outdegree', 'pairwise_bernoulli', 'symmetric_pairwise_bernoulli', 'fixed_total_number'), 'data_path': '', 'data_prefix': '', 'dict_miss_is_error': True, 'eprop_learning_window': 1000.0, 'eprop_reset_neurons_on_update': True, 'eprop_update_interval': 1000.0, 'growth_curves': ('gaussian', 'linear', 'sigmoid'), 'growth_factor_buffer_spike_data': 1.5, 'growth_factor_buffer_target_data': 1.5, 'keep_source_table': True, 'local_num_threads': 64, 'local_spike_counter': 634801, 'max_buffer_size_target_data': 16777216, 'max_delay': 1.5, 'max_num_syn_models': 512, 'max_update_time': 0.07208822799999992, 'min_delay': 1.5, 'min_update_time': 0.0008444749999999999, 'ms_per_tic': 0.001, 'network_size': 180002, 'node_models': ('volume_transmitter', 'weight_recorder', 'ac_generator', 'dc_generator', 'gamma_sup_generator', 'mip_generator', 'noise_generator', 'inhomogeneous_poisson_generator', 'poisson_generator', 'poisson_generator_ps', 'ppd_sup_generator', 'pulsepacket_generator', 'sinusoidal_poisson_generator', 'spike_generator', 'step_current_generator', 'step_rate_generator', 'sinusoidal_gamma_generator', 'aeif_cond_alpha', 'aeif_cond_alpha_astro', 'aeif_cond_alpha_multisynapse', 'aeif_cond_beta_multisynapse', 'aeif_cond_exp', 'aeif_psc_alpha', 'aeif_psc_exp', 'aeif_psc_delta', 'gif_cond_exp', 'gif_cond_exp_multisynapse', 'glif_cond', 'hh_cond_exp_traub', 'hh_cond_beta_gap_traub', 'hh_psc_alpha', 'hh_psc_alpha_gap', 'ht_neuron', 'iaf_chxk_2008', 'iaf_cond_alpha', 'iaf_cond_alpha_mc', 'iaf_cond_beta', 'iaf_cond_exp', 'iaf_cond_exp_sfa_rr', 'iaf_bw_2001_exact', 'siegert_neuron', 'amat2_psc_exp', 'cm_default', 'eprop_iaf_bsshslm_2020', 'eprop_iaf_adapt_bsshslm_2020', 'eprop_readout_bsshslm_2020', 'eprop_iaf', 'eprop_iaf_adapt', 'eprop_iaf_psc_delta', 'eprop_iaf_psc_delta_adapt', 'eprop_readout', 'gif_psc_exp', 'gif_psc_exp_multisynapse', 'glif_psc', 'glif_psc_double_alpha', 'iaf_chs_2007', 'iaf_psc_alpha', 'iaf_psc_alpha_multisynapse', 'iaf_psc_alpha_ps', 'iaf_psc_delta', 'iaf_psc_delta_ps', 'iaf_psc_exp', 'iaf_psc_exp_htum', 'iaf_psc_exp_multisynapse', 'iaf_psc_exp_ps', 'iaf_psc_exp_ps_lossless', 'iaf_tum_2000', 'ignore_and_fire', 'izhikevich', 'mat2_psc_exp', 'parrot_neuron', 'parrot_neuron_ps', 'pp_psc_delta', 'iaf_bw_2001', 'aeif_psc_delta_clopath', 'hh_psc_alpha_clopath', 'astrocyte_lr_1994', 'gif_pop_psc_exp', 'correlation_detector', 'correlomatrix_detector', 'correlospinmatrix_detector', 'spike_train_injector', 'erfc_neuron', 'ginzburg_neuron', 'mcculloch_pitts_neuron', 'gauss_rate_ipn', 'rate_transformer_gauss', 'lin_rate_ipn', 'lin_rate_opn', 'rate_transformer_lin', 'sigmoid_rate_ipn', 'rate_transformer_sigmoid', 'sigmoid_rate_gg_1998_ipn', 'rate_transformer_sigmoid_gg_1998', 'tanh_rate_ipn', 'tanh_rate_opn', 'rate_transformer_tanh', 'threshold_lin_rate_ipn', 'threshold_lin_rate_opn', 'rate_transformer_threshold_lin', 'multimeter', 'voltmeter', 'spike_recorder', 'spin_detector', 'spike_dilutor', 'pp_cond_exp_mc_urbanczik'), 'num_connections': 1012591000, 'num_processes': 2, 'off_grid_spiking': False, 'overwrite_files': True, 'prepared': False, 'print_time': False, 'recording_backends': ('memory', 'ascii', 'screen', 'mpi'), 'recv_buffer_size_secondary_events': 0, 'resolution': 0.1, 'rng_seed': 143202461, 'rng_type': 'mt19937_64', 'rng_types': ('Philox_32', 'Philox_64', 'Threefry_32', 'Threefry_64', 'mt19937', 'mt19937_64'), 'send_buffer_size_secondary_events': 0, 'spike_buffer_grow_extra': 0.5, 'spike_buffer_resize_log': {'times': array([    0,     0,    30,    30,    45,    60,   330,   330,   360,
+         510,   510,   525,   660,   675,   690,   705,   735,   765,
+         810,   885,   885,   900,   930,  1050,  1050,  1065,  1095,
+        1260,  1260,  1275,  1305,  1440,  1485,  1485,  1500,  1575,
+        1710,  1710,  1725,  1740,  1800,  1800,  1935,  1995,  1995,
+        2010,  2160,  2160,  2175,  2190,  2310,  2325,  2370,  2385,
+        2400,  2415,  2595,  2625,  2655,  2685,  2745,  2760,  2775,
+        3015,  3090,  3105,  3120,  3165,  3225,  3225,  3240,  3255,
+        3285,  3315,  3330,  3375,  3375,  3390,  3405,  3570,  3615,
+        3630,  3645,  3660,  3930,  3975,  3990,  4020,  4035,  4095,
+        4095,  4125,  4320,  4320,  4350,  4455,  4470,  4485,  4500,
+        4545,  4545,  4575,  4620,  4650,  4665,  4680,  4740,  4740,
+        4755,  4785,  4935,  4935,  4950,  5220,  5280,  5280,  5295,
+        5355,  5355,  5400,  5445,  5445,  5460,  5475,  5505,  5550,
+        5565,  5610,  5625,  5670,  6390,  6435,  6435,  6450,  6465,
+        6510,  6525,  6555,  6960,  7035,  7035,  7050,  7305,  7365,
+        7365,  7380,  7395,  7410,  7485,  7500,  7530,  7725,  7770,
+        7785,  7800,  7815,  7875,  7890,  7905,  8355,  8355,  8370,
+        8430,  8490,  8490,  8505,  8520,  8955,  8955,  8985,  9345,
+        9375,  9420,  9435,  9480,  9480,  9525,  9630,  9630,  9645,
+        9660,  9930, 10005, 10005, 10020, 10065, 10125, 10125, 10140,
+       10155, 10215, 10215, 10230, 10245, 10260, 10335, 10335, 10350,
+       10365, 10410, 10470, 10845, 10845, 10860, 10875, 10920, 10920,
+       10935, 10950]), 'global_max_spikes_sent': array([   0, 3524,  220,  741, 2058, 3358,  491, 1082, 2439,  559, 1342,
+       2695,  498,  991, 2354, 5224, 1321, 1625, 2751,  617,  891, 1897,
+       3390,  914, 1213, 1843, 2896,  596,  858, 1343, 2426, 4025,  706,
+        853, 1691, 2705,  758, 1067, 2359, 4103, 1070, 1475, 2807,  746,
+        987, 2496,  343,  545, 1072, 1795, 4341, 6788,  482,  702, 1205,
+       2226, 4147, 1163, 1633, 3202,  869, 1332, 2126, 4390,  898, 1060,
+       1783, 2675,  697, 1172, 2558, 4329, 1283, 1659, 2540,  323,  387,
+       1138, 2693, 4490,  580,  789, 1468, 2986, 4777,  278,  622, 1426,
+       3868,  865,  987, 3157,  880, 1586, 2618,  659, 1009, 1599, 4100,
+        885, 1171, 4003,  638,  873, 1738, 3059,  513,  771, 1481, 2368,
+        545,  707, 1985, 3619,  881, 1603, 2915,  708, 1506, 3059,  754,
+       1062, 2582, 4777, 1001, 2281, 4314,  876, 1245, 2224, 3457,  603,
+       1179, 2480, 4247,  807, 1173, 2551, 3849,  841, 1004, 2133, 3220,
+        449,  557,  850, 1640, 2506,  654, 1502, 2396, 5256,  426,  730,
+       1531, 2707,  597, 1109, 2663,  497,  775, 1860, 3617,  530,  608,
+       1067, 2081,  540, 1366, 2638, 5320, 1270, 1759, 3292,  558, 1168,
+       2349,  394,  493, 1007, 1689, 2600,  636,  868, 1377, 2353,  552,
+        822, 1279, 3421,  369,  584, 1010, 1689, 2800,  746, 1068, 2770,
+       4870,  989, 2718,  688, 1126, 2179, 3663,  498,  627, 1184, 2222]), 'new_buffer_size': array([    2,  5286,   242,  1111,  3087,  5037,   540,  1623,  3658,
+         614,  2013,  4042,   547,  1486,  3531,  7836,  1453,  2437,
+        4126,   678,  1336,  2845,  5085,  1005,  1819,  2764,  4344,
+         655,  1287,  2014,  3639,  6037,   776,  1279,  2536,  4057,
+         833,  1600,  3538,  6154,  1177,  2212,  4210,   820,  1480,
+        3744,   377,   817,  1608,  2692,  6511, 10182,   530,  1053,
+        1807,  3339,  6220,  1279,  2449,  4803,   955,  1998,  3189,
+        6585,   987,  1590,  2674,  4012,   766,  1758,  3837,  6493,
+        1411,  2488,  3810,   355,   580,  1707,  4039,  6735,   638,
+        1183,  2202,  4479,  7165,   305,   933,  2139,  5802,   951,
+        1480,  4735,   968,  2379,  3927,   724,  1513,  2398,  6150,
+         973,  1756,  6004,   701,  1309,  2607,  4588,   564,  1156,
+        2221,  3552,   599,  1060,  2977,  5428,   969,  2404,  4372,
+         778,  2259,  4588,   829,  1593,  3873,  7165,  1101,  3421,
+        6471,   963,  1867,  3336,  5185,   663,  1768,  3720,  6370,
+         887,  1759,  3826,  5773,   925,  1506,  3199,  4830,   493,
+         835,  1275,  2460,  3759,   719,  2253,  3594,  7884,   468,
+        1095,  2296,  4060,   656,  1663,  3994,   546,  1162,  2790,
+        5425,   583,   912,  1600,  3121,   594,  2049,  3957,  7980,
+        1397,  2638,  4938,   613,  1752,  3523,   433,   739,  1510,
+        2533,  3900,   699,  1302,  2065,  3529,   607,  1233,  1918,
+        5131,   405,   876,  1515,  2533,  4200,   820,  1602,  4155,
+        7305,  1087,  4077,   756,  1689,  3268,  5494,   547,   940,
+        1776,  3333])}, 'spike_buffer_shrink_limit': 0.2, 'spike_buffer_shrink_spare': 0.1, 'stimulation_backends': ('mpi',), 'structural_plasticity_synapses': {}, 'structural_plasticity_update_interval': 10000.0, 'synapse_models': ('bernoulli_synapse', 'bernoulli_synapse_hpc', 'bernoulli_synapse_lbl', 'clopath_synapse', 'clopath_synapse_hpc', 'clopath_synapse_lbl', 'cont_delay_synapse', 'cont_delay_synapse_hpc', 'cont_delay_synapse_lbl', 'diffusion_connection', 'eprop_synapse_bsshslm_2020', 'eprop_synapse_bsshslm_2020_hpc', 'eprop_learning_signal_connection_bsshslm_2020', 'eprop_synapse', 'eprop_synapse_hpc', 'eprop_learning_signal_connection', 'gap_junction', 'ht_synapse', 'ht_synapse_hpc', 'ht_synapse_lbl', 'jonke_synapse', 'jonke_synapse_hpc', 'jonke_synapse_lbl', 'quantal_stp_synapse', 'quantal_stp_synapse_hpc', 'quantal_stp_synapse_lbl', 'rate_connection_delayed', 'rate_connection_instantaneous', 'sic_connection', 'static_synapse', 'static_synapse_hpc', 'static_synapse_lbl', 'static_synapse_hom_w', 'static_synapse_hom_w_hpc', 'static_synapse_hom_w_lbl', 'stdp_dopamine_synapse', 'stdp_dopamine_synapse_hpc', 'stdp_dopamine_synapse_lbl', 'stdp_nn_pre_centered_synapse', 'stdp_nn_pre_centered_synapse_hpc', 'stdp_nn_pre_centered_synapse_lbl', 'stdp_nn_restr_synapse', 'stdp_nn_restr_synapse_hpc', 'stdp_nn_restr_synapse_lbl', 'stdp_nn_symm_synapse', 'stdp_nn_symm_synapse_hpc', 'stdp_nn_symm_synapse_lbl', 'stdp_pl_synapse_hom', 'stdp_pl_synapse_hom_hpc', 'stdp_pl_synapse_hom_lbl', 'stdp_synapse', 'stdp_synapse_hpc', 'stdp_synapse_lbl', 'stdp_facetshw_synapse_hom', 'stdp_facetshw_synapse_hom_hpc', 'stdp_facetshw_synapse_hom_lbl', 'stdp_synapse_hom', 'stdp_synapse_hom_hpc', 'stdp_synapse_hom_lbl', 'stdp_triplet_synapse', 'stdp_triplet_synapse_hpc', 'stdp_triplet_synapse_lbl', 'tsodyks2_synapse', 'tsodyks2_synapse_hpc', 'tsodyks2_synapse_lbl', 'tsodyks_synapse', 'tsodyks_synapse_hpc', 'tsodyks_synapse_lbl', 'tsodyks_synapse_hom', 'tsodyks_synapse_hom_hpc', 'tsodyks_synapse_hom_lbl', 'urbanczik_synapse', 'urbanczik_synapse_hpc', 'urbanczik_synapse_lbl', 'vogels_sprekeler_synapse', 'vogels_sprekeler_synapse_hpc', 'vogels_sprekeler_synapse_lbl', 'syn_ex', 'syn_in'), 'T_max': 1152921504606846.8, 'T_min': -1152921504606846.8, 'tics_per_ms': 1000.0, 'tics_per_step': 100, 'time_communicate_prepare': (9.444756629, 9.444749199, 9.444749209, 9.444749169, 9.44473528, 9.44473522, 9.44473522, 9.44473516, 9.44474358, 9.444742269, 9.444742219, 9.444742239, 9.444751579, 9.44475091, 9.44475092, 9.44475088, 9.44475475, 9.44475473, 9.44474989, 9.44475615, 9.444738539, 9.44473855, 9.444738549, 9.4447442, 9.444748919, 9.44473655, 9.444738999, 9.44473877, 9.444747789, 9.44475247, 9.4447567, 9.444756719, 9.44476086, 9.444766729, 9.44476083, 9.444767709, 9.444765059, 9.44476505, 9.44476696, 9.44476512, 9.444760009, 9.444783859, 9.44475996, 9.444760049, 9.444775179, 9.444769279, 9.444777829, 9.444771959, 9.444766619, 9.44476461, 9.44476677, 9.444777789, 9.444773999, 9.444775489, 9.444776329, 9.444773949, 9.444781499, 9.444780679, 9.444783309, 9.444774919, 9.444775439, 9.444780759, 9.444775449, 9.444800739), 'time_communicate_prepare_cpu': (1.903168398, 2.617558631, 2.59518343, 2.61482043, 2.613042408, 2.605742811, 2.6193477, 2.618477372, 2.617476739, 2.612839481, 7.238642371, 2.622258356, 2.606645925, 2.614866092, 2.617467352, 2.60388484, 2.617466731, 4.502572758, 2.621630493, 2.62541652, 2.623657179, 2.613158631, 2.620688508, 2.619539518, 2.605080769, 2.521734551, 2.604713795, 2.608034119, 2.605612921, 2.613380821, 2.613765501, 2.585850548, 2.612324717, 2.622318474, 2.614496264, 2.619416381, 2.616999524, 2.614630049, 2.618555706, 2.60865537, 2.584040619, 2.57002125, 2.584747818, 2.596846431, 2.666867278, 2.603984304, 2.592032028, 2.59329145, 2.60114109, 2.600711741, 2.610552301, 2.592502348, 2.600303628, 2.597781469, 2.58505337, 2.560478673, 2.608170033, 2.603020062, 2.60280736, 2.608969137, 2.592770706, 2.612771903, 2.615551694, 2.591585738), 'time_construction_connect': 7.574523897, 'time_construction_connect_cpu': 3.301403122, 'time_construction_create': 0.108937704, 'time_construction_create_cpu': 0.03063366, 'time_simulate': 13.60613011, 'time_simulate_cpu': 13.467967475, 'to_do': 0, 'total_num_virtual_procs': 128, 'update_time_limit': inf, 'use_compressed_spikes': True, 'use_wfr': True, 'wfr_comm_interval': 1.0, 'wfr_interpolation_order': 3, 'wfr_max_iterations': 15, 'wfr_tol': 0.0001}
+        1776,  3333])}, 'spike_buffer_shrink_limit': 0.2, 'spike_buffer_shrink_spare': 0.1, 'stimulation_backends': ('mpi',), 'structural_plasticity_synapses': {}, 'structural_plasticity_update_interval': 10000.0, 'synapse_models': ('bernoulli_synapse', 'bernoulli_synapse_hpc', 'bernoulli_synapse_lbl', 'clopath_synapse', 'clopath_synapse_hpc', 'clopath_synapse_lbl', 'cont_delay_synapse', 'cont_delay_synapse_hpc', 'cont_delay_synapse_lbl', 'diffusion_connection', 'eprop_synapse_bsshslm_2020', 'eprop_synapse_bsshslm_2020_hpc', 'eprop_learning_signal_connection_bsshslm_2020', 'eprop_synapse', 'eprop_synapse_hpc', 'eprop_learning_signal_connection', 'gap_junction', 'ht_synapse', 'ht_synapse_hpc', 'ht_synapse_lbl', 'jonke_synapse', 'jonke_synapse_hpc', 'jonke_synapse_lbl', 'quantal_stp_synapse', 'quantal_stp_synapse_hpc', 'quantal_stp_synapse_lbl', 'rate_connection_delayed', 'rate_connection_instantaneous', 'sic_connection', 'static_synapse', 'static_synapse_hpc', 'static_synapse_lbl', 'static_synapse_hom_w', 'static_synapse_hom_w_hpc', 'static_synapse_hom_w_lbl', 'stdp_dopamine_synapse', 'stdp_dopamine_synapse_hpc', 'stdp_dopamine_synapse_lbl', 'stdp_nn_pre_centered_synapse', 'stdp_nn_pre_centered_synapse_hpc', 'stdp_nn_pre_centered_synapse_lbl', 'stdp_nn_restr_synapse', 'stdp_nn_restr_synapse_hpc', 'stdp_nn_restr_synapse_lbl', 'stdp_nn_symm_synapse', 'stdp_nn_symm_synapse_hpc', 'stdp_nn_symm_synapse_lbl', 'stdp_pl_synapse_hom', 'stdp_pl_synapse_hom_hpc', 'stdp_pl_synapse_hom_lbl', 'stdp_synapse', 'stdp_synapse_hpc', 'stdp_synapse_lbl', 'stdp_facetshw_synapse_hom', 'stdp_facetshw_synapse_hom_hpc', 'stdp_facetshw_synapse_hom_lbl', 'stdp_synapse_hom', 'stdp_synapse_hom_hpc', 'stdp_synapse_hom_lbl', 'stdp_triplet_synapse', 'stdp_triplet_synapse_hpc', 'stdp_triplet_synapse_lbl', 'tsodyks2_synapse', 'tsodyks2_synapse_hpc', 'tsodyks2_synapse_lbl', 'tsodyks_synapse', 'tsodyks_synapse_hpc', 'tsodyks_synapse_lbl', 'tsodyks_synapse_hom', 'tsodyks_synapse_hom_hpc', 'tsodyks_synapse_hom_lbl', 'urbanczik_synapse', 'urbanczik_synapse_hpc', 'urbanczik_synapse_lbl', 'vogels_sprekeler_synapse', 'vogels_sprekeler_synapse_hpc', 'vogels_sprekeler_synapse_lbl', 'syn_ex', 'syn_in'), 'T_max': 1152921504606846.8, 'T_min': -1152921504606846.8, 'tics_per_ms': 1000.0, 'tics_per_step': 100, 'time_communicate_prepare': (9.452648068, 9.452638919, 9.452638749, 9.452639668, 9.452629049, 9.452629069, 9.452629109, 9.452629029, 9.452631839, 9.452631859, 9.452631868, 9.452631838, 9.452636558, 9.452636599, 9.452637168, 9.452636578, 9.452653178, 9.452650278, 9.452650278, 9.452650248, 9.452639798, 9.452639679, 9.452645148, 9.452646868, 9.452628458, 9.452628489, 9.452628469, 9.452633658, 9.452630068, 9.452630998, 9.452630909, 9.452630178, 9.452649658, 9.452644128, 9.452644208, 9.452654418, 9.452671388, 9.452670368, 9.452666718, 9.452666788, 9.452652118, 9.452652138, 9.452652118, 9.452657918, 9.452652648, 9.452660528, 9.452652698, 9.452661128, 9.452666718, 9.452672168, 9.452657918, 9.452667318, 9.452681278, 9.452677308, 9.452680578, 9.452685008, 9.452683168, 9.452678608, 9.452678598, 9.452678568, 9.452677368, 9.452669568, 9.452673858, 9.452669608), 'time_communicate_prepare_cpu': (1.942354898, 2.68204894, 2.592649291, 2.621375685, 2.633536141, 2.636126491, 2.630258189, 2.637135162, 2.656674642, 2.654592671, 2.654618995, 2.651279361, 2.653767076, 2.646876568, 2.656873599, 2.654512009, 2.659432457, 2.664171201, 2.650139461, 2.639827478, 2.661737619, 2.66012783, 2.665144461, 2.664606929, 4.446819724, 2.66002178, 7.306735333, 2.661632973, 2.674247368, 2.664960529, 2.66312468, 2.666313859, 2.660085854, 2.641802173, 2.656163838, 2.671362183, 2.665402946, 2.642800618, 2.669700656, 2.661382091, 2.662182889, 2.638815988, 2.660012755, 2.654031042, 2.664363619, 2.653189407, 2.643033281, 2.66490042, 2.657307294, 2.662819801, 2.659345097, 2.652652877, 2.651592432, 2.654705062, 2.628334031, 2.641112818, 2.662326595, 2.641463903, 2.656295421, 2.65401383, 2.740426942, 2.663358971, 2.629016871, 2.662015482), 'time_construction_connect': 8.290690659, 'time_construction_connect_cpu': 3.29991859, 'time_construction_create': 0.105110057, 'time_construction_create_cpu': 0.029999544, 'time_simulate': 13.60612936, 'time_simulate_cpu': 13.498979785, 'to_do': 0, 'total_num_virtual_procs': 128, 'update_time_limit': inf, 'use_compressed_spikes': True, 'use_wfr': True, 'wfr_comm_interval': 1.0, 'wfr_interpolation_order': 3, 'wfr_max_iterations': 15, 'wfr_tol': 0.0001}
