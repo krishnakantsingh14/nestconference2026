@@ -15,7 +15,7 @@
 ```bash
 apptainer build nest.sif nestzen2.def
 # If CVMFS not visible, bind mount:
-apptainer build --bind /cvmfs:/cvmfs nest.sif nestzen2.def
+apptainer build --fakeroot --bind /cvmfs:/cvmfs nest.sif nestzen2.def
 ```
 
 ## Usage
