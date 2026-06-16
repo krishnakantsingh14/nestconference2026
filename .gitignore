@@ -1,0 +1,38 @@
+# LaTeX / TeX
+*.aux
+*.bbl
+*.blg
+*.dvi
+*.idv
+*.log
+*.out
+*.pdf
+*.ps
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.pdfsync
+*.tikz
+*.svg
+*.pdf_tex
+*.svg_tex
+
+# LaTeX builds
+latexmkrc
+latexmkrc.*
+*~
+
+# Editor files
+*.swp
+*.swo
+*~
+.DS_Store
+.idea/
+.vscode/
+
+# Build directories
+_build/
+build/
