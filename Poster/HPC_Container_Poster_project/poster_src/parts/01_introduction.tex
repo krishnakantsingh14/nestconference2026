@@ -1,0 +1,14 @@
+% ================= ROW 1 : INTRODUCTION =================
+\begin{block}{1.~\ Introduction --- reproducibility lives in the dependency graph}
+\large
+Reproducibility in computational neuroscience depends not only on the simulator but on its \emph{entire dependency
+graph}. \tl{NEST\,3.9} carries \hl{72 transitive dependencies} (e.g., OpenMPI, Boost, jemalloc, Python). Deploying such
+workflows across HPC is hindered by site-specific dependencies, heterogeneous OS, and microarchitecture-specific
+compiler optimisations. The \tl{EBRAINS Software Distribution (ESD)} tracks dependencies rigidly via \emph{Spack},
+yet synchronising identical environments from ESD cloud deployments onto specific HPC hosts still leads to
+\hl{dependency hell}.
+\medskip
+
+\centering\textbf{\large We present a \hl{zero-install} approach:\\portable, HPC-enabled \tl{Apptainer} images that
+reach \hl{near-bare-metal} performance --- and ask: \emph{how much does portability cost?}}
+\end{block}

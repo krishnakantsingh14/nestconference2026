@@ -1,0 +1,24 @@
+\documentclass[final]{beamer}
+\usepackage[size=a0, scale=0.94, orientation=portrait]{beamerposter}
+\usetheme{ebrains}
+\usecolortheme{ebrains}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{siunitx}
+\sisetup{detect-all, group-minimum-digits={4}}
+\graphicspath{{figures/}}
+
+\definecolor{ebrteal}{HTML}{0E8C6E}
+\definecolor{ebrmag}{HTML}{DE0054}
+\definecolor{ebrblue}{HTML}{1374C3}
+\definecolor{ebrviolet}{HTML}{836C91}
+\newcommand{\hl}[1]{\textcolor{ebrmag}{\textbf{#1}}}
+\newcommand{\tl}[1]{\textcolor{ebrteal}{\textbf{#1}}}
+% table cell helpers
+\newcommand{\cI}{\textcolor{ebrteal}{\textbf{in image}}}
+\newcommand{\cC}{\textcolor{ebrmag}{\textbf{from \texttt{/cvmfs}}}}
+\newcommand{\cH}{\textcolor{black!55}{host}}
+\newcommand{\cM}{\textcolor{black!55}{host module}}

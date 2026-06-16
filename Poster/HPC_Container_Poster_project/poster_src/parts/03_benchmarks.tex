@@ -1,0 +1,18 @@
+% ================= ROW 3 : COMMUNICATION MICROBENCHMARKS =================
+\begin{block}{3.~\ Communication micro-benchmarks --- container vs native (Karolina \& JURECA)}
+\begin{columns}[T]
+  \begin{column}{0.325\textwidth}
+    \centering\includegraphics[width=\textwidth]{figures/comm_osu_init.png}
+  \end{column}
+  \begin{column}{0.325\textwidth}
+    \centering\includegraphics[width=\textwidth]{figures/comm_osu_latency.png}
+  \end{column}
+  \begin{column}{0.325\textwidth}
+    \centering\includegraphics[width=\textwidth]{figures/comm_nccl.png}
+  \end{column}
+\end{columns}
+\medskip
+\large\centering
+\hl{Point-to-point latency and NCCL bus bandwidth are indistinguishable from native};\\MPI\_Init is on par
+(on JURECA the container is even \emph{faster}, insulated from a host hwloc regression).
+\end{block}
