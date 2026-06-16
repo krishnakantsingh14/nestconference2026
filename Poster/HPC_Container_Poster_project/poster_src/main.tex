@@ -1,0 +1,172 @@
+\documentclass[final]{beamer}
+\usepackage[size=a0, scale=0.94, orientation=portrait]{beamerposter}
+\usetheme{ebrains}
+\usecolortheme{ebrains}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{siunitx}
+\sisetup{detect-all, group-minimum-digits={4}}
+\graphicspath{{figures/}}
+
+\definecolor{ebrteal}{HTML}{0E8C6E}
+\definecolor{ebrmag}{HTML}{DE0054}
+\definecolor{ebrblue}{HTML}{1374C3}
+\definecolor{ebrviolet}{HTML}{836C91}
+\newcommand{\hl}[1]{\textcolor{ebrmag}{\textbf{#1}}}
+\newcommand{\tl}[1]{\textcolor{ebrteal}{\textbf{#1}}}
+% table cell helpers
+\newcommand{\cI}{\textcolor{ebrteal}{\textbf{in image}}}
+\newcommand{\cC}{\textcolor{ebrmag}{\textbf{from \texttt{/cvmfs}}}}
+\newcommand{\cH}{\textcolor{black!55}{host}}
+\newcommand{\cM}{\textcolor{black!55}{host module}}
+
+\title{Portable, Streaming HPC Containers for the EBRAINS Software Distribution}
+\author{Krishna Kant Singh\inst{1} \and Eleni Mathioulaki\inst{2} \and Dennis Terhorst\inst{3} \and Rajalekshmi Deepu\inst{1} \and Eric Müller\inst{4}}
+\institute[shortinst]{%
+\inst{1} Simulation \& Data Lab Neuroscience, Jülich Supercomputing Centre, Forschungszentrum Jülich, Germany \quad
+\inst{2} ATHENA Research \& Innovation Center, Marousi, Greece \quad
+\inst{3} Institute for Advanced Simulation (IAS-6), Forschungszentrum Jülich, Germany \quad
+\inst{4} Kirchhoff Institute for Physics, Ruprecht-Karls-Universität Heidelberg, Germany}
+
+\newcommand\textbox[1]{\parbox{\colwidth}{#1}}
+\footercontent{\noindent\raggedright\textbox{\small{}Co-funded via EC Horizon Europe grant 101147319 (EBRAINS 2.0)\hfill}}
+\logoleft{\begin{minipage}[t]{.20\paperwidth}\vspace{1.0cm}\hspace{2.5cm}\includegraphics[height=7.cm]{images/ebrains_logo_ESD_sticker_whiteonly.png}\vspace{1.0cm}\end{minipage}}
+\logoright{\vspace{-0.8cm}\includegraphics[height=7.cm]{images/ebrains_with_text.png}\hspace{5.5cm}}
+
+\begin{document}
+\begin{frame}[t]
+\begin{columns}[t]
+\separatorcolumn
+\begin{column}{0.955\paperwidth}
+
+% ================= ROW 1 : INTRODUCTION =================
+\begin{block}{1.\ \ Introduction --- reproducibility lives in the dependency graph}
+\large
+Reproducibility in computational neuroscience depends not only on the simulator but on its \emph{entire dependency
+graph}. \tl{NEST\,3.9} carries \hl{72 transitive dependencies} (e.g., OpenMPI, Boost, jemalloc, Python). Deploying such
+workflows across HPC is hindered by site-specific dependencies, heterogeneous OS, and microarchitecture-specific
+compiler optimisations. The \tl{EBRAINS Software Distribution (ESD)} tracks dependencies rigidly via \emph{Spack},
+yet synchronising identical environments from ESD cloud deployments onto specific HPC hosts still leads to
+\hl{dependency hell}.
+\medskip
+
+\centering\textbf{\large We present a \hl{zero-install} approach:\\portable, HPC-enabled \tl{Apptainer} images that
+reach \hl{near-bare-metal} performance --- and ask: \emph{how much does portability cost?}}
+\end{block}
+
+% ================= ROW 2 : OUR APPROACH =================
+\begin{block}{2.\ \ Our approach --- HPC-enabled, streaming containers}
+\begin{columns}[T]
+  \begin{column}{0.40\textwidth}
+    \large
+    \heading{Runtime Portability --- PMIx bridges container-host MPI}
+    The image encapsulates \tl{OpenMPI\,5.x, UCX, verbs} and a \hl{PMIx client}. At runtime the client connects to
+    the \hl{host-side PMIx server} exposed by SLURM, bridging container MPI to the host fabric, process manager and
+    scheduler simultaneously.
+    \medskip
+
+    \heading{Compile-time Portability --- Multi-architecture Builds}
+    \tl{QEMU} user-mode emulation inside Apptainer produces \hl{architecture-optimised} builds
+    (AVX2 \& AVX-512, Intel/AMD) from a single host.
+    \medskip
+
+    \heading{Toward ``Software Streaming''}
+    The dependency stack moves onto \hl{CernVM-FS}: the image ships only the application; the EESSI stack is
+    \emph{streamed on demand}, so one thin image runs across EuroHPC sites.
+  \end{column}
+  \begin{column}{0.585\textwidth}
+    \begin{columns}[T]
+      \begin{column}{0.46\textwidth}
+        \centering\includegraphics[width=0.86\textwidth]{figures/arch_layers.png}\\[-0.2cm]
+        {\small Host\,/\,container split; magenta = PMIx wire-up.}
+      \end{column}
+      \begin{column}{0.52\textwidth}
+        \centering\includegraphics[width=0.98\textwidth]{figures/cvmfs_streaming.png}\\[0.2cm]
+        {\small Build once $\rightarrow$ stream stack from CernVM-FS $\rightarrow$ run at any EuroHPC site.}
+      \end{column}
+    \end{columns}
+    \vspace{0.3cm}
+
+    % ---- table, full width beneath the figures ----
+    \heading{Dependency provenance across deployment models}
+    {\centering\normalsize
+    \renewcommand{\arraystretch}{1.3}\setlength{\tabcolsep}{10pt}
+    \begin{tabular}{@{}l c c c@{}}
+      \textbf{Software component} & \tl{Bare-metal} & \textcolor{ebrmag}{\textbf{CVMFS-streamed}} & \textcolor{ebrviolet}{\textbf{Fully-bundled}}\\
+      \hline
+      OS userspace & \cH & \cI & \cI\\
+      Application: \textbf{NEST} & \cM & \cI & \cI\\
+      MPI \& comm.\ (OpenMPI, UCX, PMIx) & \cM & \cC & \cI\\
+      Base libraries (GCC, Python, math) & \cM & \cC & \cI\\
+      PMIx server $\cdot$ fabric $\cdot$ drivers & \cH & \cH & \cH\\
+    \end{tabular}\par}
+  \end{column}
+\end{columns}
+\end{block}
+
+% ================= ROW 3 : COMMUNICATION MICROBENCHMARKS =================
+\begin{block}{3.\ \ Communication micro-benchmarks --- container vs native (Karolina \& JURECA)}
+\begin{columns}[T]
+  \begin{column}{0.325\textwidth}
+    \centering\includegraphics[width=\textwidth]{figures/comm_osu_init.png}
+  \end{column}
+  \begin{column}{0.325\textwidth}
+    \centering\includegraphics[width=\textwidth]{figures/comm_osu_latency.png}
+  \end{column}
+  \begin{column}{0.325\textwidth}
+    \centering\includegraphics[width=\textwidth]{figures/comm_nccl.png}
+  \end{column}
+\end{columns}
+\medskip
+\large\centering
+\hl{Point-to-point latency and NCCL bus bandwidth are indistinguishable from native};\\MPI\_Init is on par
+(on JURECA the container is even \emph{faster}, insulated from a host hwloc regression).
+\end{block}
+
+% ================= ROW 4 : NEST SCALING =================
+\begin{block}{4.\ \ NEST scaling --- three deployment models on JUSUF (1--32 nodes)}
+\begin{columns}[T]
+  \begin{column}{0.53\textwidth}
+    \centering\includegraphics[width=\textwidth]{figures/res_weak_stacked.png}
+  \end{column}
+  \begin{column}{0.43\textwidth}
+    \centering\includegraphics[width=\textwidth]{figures/res_portability_total.png}\\[0.3cm]
+    \raggedright\large \hl{Portability cost $\approx 0$:} both CVMFS-streamed and fully-bundled images stay within
+    $\pm4\%$ of bare-metal ParaStationMPI across 1--32 nodes.
+  \end{column}
+\end{columns}
+\end{block}
+
+% ================= ROW 5 : CONCLUSION + REFERENCES =================
+\begin{columns}[T]
+  \begin{column}{0.60\textwidth}
+    \begin{block}{5.\ \ Conclusion}
+    \large
+    \begin{itemize}
+      \vitem \hl{Portability is essentially free:} containerised MPI matches native at the fabric (OSU, NCCL)
+      and application (NEST) level.
+      \vitem \tl{Build once, run anywhere:} PMIx wire-up + QEMU multi-arch + CernVM-FS streaming give one thin,
+      EuroHPC-portable image --- a practical, zero-install path for the ESD toward on-demand HPC deployment.
+    \end{itemize}
+    \end{block}
+  \end{column}
+  \begin{column}{0.38\textwidth}
+    \begin{block}{References}
+    \small
+    \begin{enumerate}
+      \item Singh, Krishna Kant, \textit{et al.} ``HPC Containers for EBRAINS: Towards Portable Cross-Domain Software Environment.'' arXiv:2603.12044 (2026).
+      \item J.\ Albers \textit{et al.}, ``A Modular Workflow for Performance Benchmarking of Neuronal Network Simulations,'' \textit{Front. Neuroinform.} \textbf{16}:837549, 2022.
+      \item EESSI --- \textit{European Environment for Scientific Software Installations}, \texttt{eessi.io}.
+    \end{enumerate}
+    \end{block}
+  \end{column}
+\end{columns}
+
+\end{column}
+\separatorcolumn
+\end{columns}
+\end{frame}
+\end{document}
