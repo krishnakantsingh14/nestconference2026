@@ -1,0 +1,92 @@
+spack:
+  specs:
+    - nest@3.9 +python +mpi +openmp +gsl +optimize ^openmpi@5.0.8 ^python@3.13.5
+    # boost is NOT a +variant of nest (NEST pulls Boost as an unconditional
+    # dependency); the boost external below satisfies it without a toggle.
+    # nest@3.9 comes from the custom 'nest' repo created in step 5b, since the
+    # builtin repo only ships master, 3.0, 2.20.1.
+  view: /opt/view
+  concretizer:
+    unify: true
+    reuse: true
+  packages:
+    all:
+      require: '%gcc@14.3.0'
+    mpi:
+      buildable: false
+    openmpi:
+      buildable: false
+      externals:
+        # NOTE the explicit  here — without these on the
+        # spec, Spack treats openmpi as a leaf with NO dependencies and the
+        # downstream link line gets only -L/.../OpenMPI/lib. EESSI's libmpi.so
+        # then fails to link with  and
+        #  because those .so files aren't on the search path.
+        # Declaring the externals separately AND on this spec teaches Spack
+        # about openmpi's real dep DAG; the resulting link line gains -L for
+        # pmix and hwloc, satisfying libmpi.so's undefined refs.
+        - spec: openmpi@5.0.8 %gcc@14.3.0 ^pmix@5.0.8 ^hwloc@2.12.1 ^libevent@2.1.12
+          prefix: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/software/OpenMPI/5.0.8-GCC-14.3.0
+    pmix:
+      buildable: false
+      externals:
+        - spec: pmix@5.0.8 %gcc@14.3.0
+          prefix: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/software/PMIx/5.0.8-GCCcore-14.3.0
+    hwloc:
+      buildable: false
+      externals:
+        - spec: hwloc@2.12.1 %gcc@14.3.0
+          prefix: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/software/hwloc/2.12.1-GCCcore-14.3.0
+    libevent:
+      buildable: false
+      externals:
+        - spec: libevent@2.1.12 %gcc@14.3.0
+          prefix: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/software/libevent/2.1.12-GCCcore-14.3.0
+    python:
+      buildable: false
+      externals:
+        - spec: python@3.13.5 +shared %gcc@14.3.0
+          prefix: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/software/Python/3.13.5-GCCcore-14.3.0
+    gsl:
+      buildable: false
+      externals:
+        - spec: gsl@2.8 %gcc@14.3.0
+          prefix: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/software/GSL/2.8-GCC-14.3.0
+    boost:
+      buildable: false
+      externals:
+        - spec: boost@1.88.0 %gcc@14.3.0
+          prefix: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/software/Boost/1.88.0-GCC-14.3.0
+    cmake:
+      buildable: false
+      externals:
+        - spec: cmake@4.0.3 %gcc@14.3.0
+          prefix: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/software/CMake/4.0.3-GCCcore-14.3.0
+    #
+    # EESSI's SciPy-bundle/2025.07-gfbf-2025b provides numpy, scipy, and cython
+    # built against Python 3.13.5 — all three live under the SAME prefix
+    # (EBROOTSCIPYMINBUNDLE — note the irregular EBROOT name for SciPy-bundle).
+    # Externalising these here is the single biggest cut: eliminates py-scipy's
+    # ~30-node source-build chain (py-pythran, py-pybind11, py-scikit-build-core,
+    # py-hatch-vcs, py-setuptools-scm, git+openssl+perl+krb5, ...).
+    #
+    # If any of the three is NOT in EESSI's bundle, concretization will say
+    # "no externals satisfy py-<name>" — verify with:
+    #   module load SciPy-bundle/2025.07-gfbf-2025b
+    #   python3 -c 'import numpy,scipy,Cython; print(numpy.__version__, scipy.__version__, Cython.__version__)'
+    # and adjust the versions below (or comment out a missing one).
+    py-numpy:
+      buildable: false
+      externals:
+        - spec: py-numpy@2.3.4 %gcc@14.3.0
+          prefix: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/software/SciPy-bundle/2025.07-gfbf-2025b
+    py-scipy:
+      buildable: false
+      externals:
+        - spec: py-scipy@1.16.3 %gcc@14.3.0
+          prefix: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/software/SciPy-bundle/2025.07-gfbf-2025b
+    py-cython:
+      buildable: false
+      externals:
+        - spec: py-cython@3.1.3 %gcc@14.3.0
+          prefix: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/software/SciPy-bundle/2025.07-gfbf-2025b

@@ -1,0 +1,281 @@
+Bootstrap: docker
+From: rockylinux/rockylinux:9
+
+# =============================================================================
+#  NEST 3.9 built with Spack 1.x on top of EESSI 2025.06
+# =============================================================================
+#  Design:
+#    - EESSI (over CVMFS) provides the heavy toolchain: GCC 14.3.0, OpenMPI 5.0.8
+#      (PMIx+UCX), Python 3.13.5, GSL, Boost. These are declared to Spack as
+#      EXTERNAL packages (buildable: false) so Spack reuses them instead of
+#      rebuilding them.
+#    - Spack 1.x builds ONLY NEST (+ a few small Python/BLAS helpers) against
+#      those externals.
+#    - Spack RPATHs every binary it builds to its dependencies' lib dirs.
+#      Because those dependencies live in /cvmfs, the /cvmfs paths get baked
+#      into NEST's RPATH automatically. => NO manual patchelf step needed
+#      (this is the big win over the hand-rolled CMake build).
+#
+#  RUNTIME REQUIREMENT: /cvmfs MUST be bind-mounted, because RPATHs point there.
+#
+#  BUILD:
+#    apptainer build --fakeroot --bind /cvmfs:/cvmfs \
+#        nest-spack-eessi.sif nest-spack-eessi.def
+#
+#    (Build needs network: dnf, git clone spack, spack bootstrap, and source
+#     tarballs for the few packages Spack compiles itself.)
+#
+#  RUN:
+#    apptainer exec --bind /cvmfs:/cvmfs nest-spack-eessi.sif \
+#        python3 -c "import nest; print(nest.__version__)"
+#    srun --mpi=pmix apptainer exec --bind /cvmfs:/cvmfs --bind /scratch:/scratch \
+#        nest-spack-eessi.sif python3 /scratch/sim.py
+# =============================================================================
+
+%labels
+    Description "NEST 3.9 built with Spack 1.x against EESSI 2025.06 (GCC 14.3.0, OpenMPI 5.0.8 + PMIx)"
+    BuildTool   "Spack releases/v1.1"
+
+%setup
+    # rockylinux:9 has no /cvmfs — create the bind-mount targets on the host
+    # rootfs BEFORE %post needs them, or the build fails with
+    # "destination /cvmfs doesn't exist in container".
+    mkdir -p ${APPTAINER_ROOTFS}/cvmfs
+    mkdir -p ${APPTAINER_ROOTFS}/scratch
+
+%post
+    set -euxo pipefail
+
+    SPACK_ENV_DIR=/opt/spack-nest          # Spack environment directory
+    SPACK_VIEW=/opt/view                    # merged view (clean runtime prefix)
+    EESSI_VERSION=2025.06
+
+    # ── 1. Minimal system deps ──────────────────────────────────────────────
+    #  - git/make/patch/file/which: spack + build glue
+    #  - patchelf, xz, bzip2: spack bootstrap / relocation helpers
+    #  - gcc/gcc-c++: ONLY a bootstrap fallback; the real compiler is EESSI's
+    #    gcc@14.3.0 (we pin %gcc@14.3.0 below so the system gcc is never used
+    #    for NEST itself).
+    dnf -y update --allowerasing
+    dnf -y install epel-release
+    dnf -y install --allowerasing \
+        git make patch file which ca-certificates \
+        gcc gcc-c++ \
+        patchelf xz bzip2 python3
+    dnf clean all
+
+    # ── 2. CVMFS / EESSI sanity check ────────────────────────────────────────
+    if [ ! -d /cvmfs/software.eessi.io/versions/${EESSI_VERSION} ]; then
+        echo "FATAL: /cvmfs/software.eessi.io/versions/${EESSI_VERSION} not visible."
+        echo "       Build with: apptainer build --fakeroot --bind /cvmfs:/cvmfs ..."
+        exit 1
+    fi
+    echo "OK: EESSI ${EESSI_VERSION} reachable"
+
+    # ── 3. Source EESSI and load the build toolchain ─────────────────────────
+    #  EESSI's init references unbound vars -> turn off -u briefly.
+    set +u
+    source /cvmfs/software.eessi.io/versions/${EESSI_VERSION}/init/bash
+
+    # Restrict MODULEPATH to EESSI only, so no site-overlay paths leak into the
+    # container (they would not exist on other clusters / laptops).
+    export MODULEPATH=$(echo "$MODULEPATH" | tr ':' '\n' \
+                        | grep '^/cvmfs/software.eessi.io' | paste -sd:)
+
+    module purge
+    module load GCC/14.3.0
+    module load OpenMPI/5.0.8-GCC-14.3.0
+    module load Python/3.13.5-GCCcore-14.3.0
+    module load SciPy-bundle/2025.07-gfbf-2025b
+    module load GSL/2.8-GCC-14.3.0
+    module load Boost/1.88.0-GCC-14.3.0
+    module load CMake/4.0.3-GCCcore-14.3.0
+    module list 2>&1
+
+    # Show the EBROOT prefixes we are about to hand to Spack as externals.
+    echo "── EBROOT* ──"; env | grep ^EBROOT | sort; echo "─────────────"
+    if [ -z "${EBROOTOPENMPI:-}" ]; then
+        echo "FATAL: EBROOTOPENMPI unset — module load did not take effect."
+        exit 1
+    fi
+    set -u   # Spack itself is set-u clean; re-enable for safety.
+
+    # ── 4. Install Spack 1.x ─────────────────────────────────────────────────
+    git clone --depth=1 --branch=releases/v1.1 \
+        https://github.com/spack/spack.git /opt/spack
+    set +u
+    source /opt/spack/share/spack/setup-env.sh
+    set -u
+
+    # ── 5. Register EESSI's GCC as Spack's compiler ──────────────────────────
+    #  Spack 1.x treats the compiler as a node in the DAG (it lives in
+    #  packages.yaml as an external). `spack compiler find` detects the gcc that
+    #  `module load GCC` put on PATH and writes the external entry for us.
+    spack compiler find
+    spack compiler list      # EESSI gcc@14.3.0 should appear (marked [e])
+
+    # ── 5b. Custom package repo: add nest@3.9 ────────────────────────────────
+    #  The builtin Spack repo only ships nest master / 3.0 / 2.20.1 — there is
+    #  NO builtin nest@3.9. Rather than vendor a whole recipe, create a tiny
+    #  overlay repo whose nest package SUBCLASSES the builtin one and only adds
+    #  the 3.9 version (fetched from the v3.9 git tag, so no sha256 needed).
+    #  All build logic (cmake_args, +python/+mpi/+gsl handling, py-numpy/cython
+    #  deps) is inherited from the builtin recipe.
+    #
+    #  `spack repo create` scaffolds the layout matching THIS Spack version
+    #  (v2.0 nests repo.yaml under spack_repo/<ns>/), so we locate repo.yaml and
+    #  the packages/ dir from it rather than hardcoding paths.
+    spack repo create /opt/my-nest-repo mynest
+
+    REPO_ROOT=$(dirname "$(find /opt/my-nest-repo -name repo.yaml | head -1)")
+    if [ -z "${REPO_ROOT}" ] || [ ! -f "${REPO_ROOT}/repo.yaml" ]; then
+        echo "FATAL: spack repo create did not produce a repo.yaml under /opt/my-nest-repo"
+        find /opt/my-nest-repo -maxdepth 4 -print
+        exit 1
+    fi
+    NEST_PKG_DIR="${REPO_ROOT}/packages/nest"
+    mkdir -p "${NEST_PKG_DIR}"
+    cat > "${NEST_PKG_DIR}/package.py" << 'PKGPY'
+from spack.package import *
+from spack_repo.builtin.packages.nest.package import Nest as BuiltinNest
+
+
+class Nest(BuiltinNest):
+    # Inherit the entire builtin NEST recipe; just teach it about 3.9.
+    version("3.9", tag="v3.9", git="https://github.com/nest/nest-simulator.git")
+PKGPY
+
+    # Add the directory that actually contains repo.yaml (NOT the top dir).
+    # Higher precedence than builtin so `nest@3.9` resolves to this recipe.
+    spack repo add "${REPO_ROOT}"
+    spack repo list
+    spack info nest | sed -n '/Safe versions/,/Variants/p'   # 3.9 should appear
+
+    # ── 6. Generate the Spack environment with EESSI deps as externals ───────
+    #  UNQUOTED heredoc => ${EBROOT*} expand to concrete /cvmfs paths AT WRITE
+    #  TIME (same trick used for the runtime env file later).
+    #
+    #  Only NEST's direct link/runtime deps are externalised here. Transitive
+    #  deps of OpenMPI (ucx, pmix, hwloc, libevent) need NOT be declared:
+    #  OpenMPI is an external leaf and already RPATHs them internally.
+    #
+    #  Small build helpers (compiler-wrapper, gcc-runtime, py-cython, py-numpi,
+    #  openblas, zlib...) are left for Spack to build from source — they land in
+    #  the store and the view, so the runtime is self-contained for those.
+    mkdir -p "${SPACK_ENV_DIR}"
+    cat > "${SPACK_ENV_DIR}/spack.yaml" << SPACKYAML
+spack:
+  specs:
+    - nest@3.9 +python +mpi +openmp +gsl +optimize ^openmpi@5.0.8 ^python@3.13.5
+    # boost is NOT a +variant of nest (NEST pulls Boost as an unconditional
+    # dependency); the boost external below satisfies it without a toggle.
+    # nest@3.9 comes from the custom mynest repo created in step 5b, since the
+    # builtin repo only ships master, 3.0, 2.20.1.
+  view: ${SPACK_VIEW}
+  concretizer:
+    unify: true
+    reuse: true
+  packages:
+    all:
+      require: '%gcc@14.3.0'
+    mpi:
+      buildable: false
+    openmpi:
+      buildable: false
+      externals:
+        - spec: openmpi@5.0.8 %gcc@14.3.0
+          prefix: ${EBROOTOPENMPI}
+    python:
+      buildable: false
+      externals:
+        - spec: python@3.13.5 +shared %gcc@14.3.0
+          prefix: ${EBROOTPYTHON}
+    gsl:
+      buildable: false
+      externals:
+        - spec: gsl@2.8 %gcc@14.3.0
+          prefix: ${EBROOTGSL}
+    boost:
+      buildable: false
+      externals:
+        - spec: boost@1.88.0 %gcc@14.3.0
+          prefix: ${EBROOTBOOST}
+    cmake:
+      buildable: false
+      externals:
+        - spec: cmake@4.0.3 %gcc@14.3.0
+          prefix: ${EBROOTCMAKE}
+SPACKYAML
+
+    echo "── Generated spack.yaml ──"; cat "${SPACK_ENV_DIR}/spack.yaml"; echo "──────────"
+
+    # ── 7. Concretize, inspect, install ──────────────────────────────────────
+    spack -e "${SPACK_ENV_DIR}" concretize -f
+    #  Print the resolved DAG to the build log. Verify in the log that openmpi,
+    #  python, gsl, boost, cmake all show as your /cvmfs externals (no rebuild).
+    spack -e "${SPACK_ENV_DIR}" spec -I nest
+
+    echo "── NEST versions Spack knows about (for reference) ──"
+    spack versions nest || true
+
+    spack -e "${SPACK_ENV_DIR}" install --fail-fast -j"$(nproc)"
+
+    # ── 8. Locate the installed PyNEST package directory ─────────────────────
+    NEST_PREFIX=$(spack -e "${SPACK_ENV_DIR}" location -i nest)
+    NEST_SP=$(find "${NEST_PREFIX}" -type d -name site-packages 2>/dev/null | head -1)
+    if [ -z "${NEST_SP}" ]; then
+        echo "FATAL: could not find PyNEST site-packages under ${NEST_PREFIX}"
+        find "${NEST_PREFIX}" -name "nest" -type d || true
+        exit 1
+    fi
+    echo "PyNEST site-packages: ${NEST_SP}"
+
+    # ── 9. Write runtime env snapshot ────────────────────────────────────────
+    #  Apptainer auto-sources every file in /.singularity.d/env/ at start, so the
+    #  user runs `apptainer exec` with NO module load / source needed.
+    #
+    #  UNQUOTED heredoc => current PATH (which contains the EESSI gcc/openmpi/
+    #  python bin dirs from `module load`) is baked in literally. We additionally
+    #  prepend the Spack view (for the `nest`/`sli` binaries) and set PYTHONPATH
+    #  to PyNEST. EBPYTHONPREFIXES is preserved so EESSI's numpy/scipy remain
+    #  importable as a fallback.
+    mkdir -p /.singularity.d/env
+    cat > /.singularity.d/env/99-nest.sh << NESTENV
+#!/bin/bash
+# Auto-generated at build time. /cvmfs MUST be bind-mounted at runtime.
+export PATH="${SPACK_VIEW}/bin:${PATH}"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH:-}"
+export PYTHONPATH="${NEST_SP}:${PYTHONPATH:-}"
+export EBPYTHONPREFIXES="${EBPYTHONPREFIXES:-}"
+
+# OpenMPI 5.x MCA tuning: PMIx-only, UCX preferred, legacy openib BTL off.
+export OMPI_MCA_pml=ucx
+export OMPI_MCA_osc=ucx
+NESTENV
+    chmod +x /.singularity.d/env/99-nest.sh
+
+    echo "── Generated 99-nest.sh ──"; cat /.singularity.d/env/99-nest.sh; echo "──────────"
+
+    # ── 10. Build-time verification in a CLEAN shell ─────────────────────────
+    #  env -i strips ALL inherited env, forcing the test to rely only on the
+    #  snapshot file. If import works here, it works for any user. /cvmfs is
+    #  mounted during the build, so this validates the real runtime path.
+    env -i HOME=/tmp PATH=/usr/bin:/bin bash -c "
+        source /.singularity.d/env/99-nest.sh
+        python3 -c 'import nest; print(\"OK: NEST import, version:\", nest.__version__)'
+    "
+
+    # ── 11. Trim ──────────────────────────────────────────────────────────────
+    spack clean --all || true
+    rm -rf /tmp/* /var/tmp/* /root/.spack/cache || true
+
+%environment
+    # Intentionally empty — all runtime env is in /.singularity.d/env/99-nest.sh
+
+%runscript
+    exec "$@"
+
+%test
+    python3 -c "import nest; print('NEST version:', nest.__version__)"
+    mpirun --version | head -1
+    which mpirun python3
