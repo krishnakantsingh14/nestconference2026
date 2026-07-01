@@ -1,14 +1,10 @@
-#!/bin/bash
-# submit_sweep.sh — weak-scaling node sweep for the NEST CVMFS benchmark
+#   usage: ./submit_sweep.sh <script> <tag>
+#   e.g.   ./submit_sweep.sh nest_single_node.sh sys
+#          ./submit_sweep.sh run_bench_cvmfs.slurm noassert
 set -euo pipefail
-
-SCRIPT=run_bench_cvmfs.slurm
-mkdir -p benchmarkingResults
-
-for N in 2 4 8 16 32; do
-    sbatch \
-        --nodes=${N} \
-        --job-name=nest_noassert_n${N} \
-        "${SCRIPT}"
-    echo "submitted: ${N} node(s) → nest_noassert_n${N}"
+SCRIPT=${1:?usage: $0 <script> <tag>}
+TAG=${2:?usage: $0 <script> <tag>}
+for N in 1 2 4 8 16 32; do
+    sbatch --nodes=${N} --job-name=nest_${TAG}_n${N} "${SCRIPT}"
+    echo "submitted: ${N} node(s) → nest_${TAG}_n${N}"
 done
